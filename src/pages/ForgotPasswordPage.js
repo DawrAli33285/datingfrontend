@@ -1,9 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { BASE_URL } from '../components/baseurl';
+
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();
   const [sent, setSent] = useState(false);
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const handleForgotPassword = async () => {
+    if (!email) return setError('Please enter your email.');
+    try {
+      setLoading(true);
+      setError('');
+      await axios.post(`${BASE_URL}/forgot-password`, { email });
+      setSent(true);
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Something went wrong. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">
@@ -33,13 +53,19 @@ export default function ForgotPasswordPage() {
           <input
             type="email"
             placeholder="you@email.com"
-            className="w-full h-12 bg-white border border-[rgba(107,45,62,0.13)] rounded-xl text-[15px] text-[#2A1A1F] px-3.5 outline-none focus:border-[#D4899A] placeholder:text-[#D9C8CC] transition-colors"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full h-12 bg-white border"
           />
         </div>
 
-        <button
-          onClick={() => setSent(true)}
-          className="w-full h-[52px] rounded-[15px] bg-[#6B2D3E] text-[#FAF8F4] text-[15px] font-medium hover:bg-[#5A2535] transition-colors"
+        {error && (
+  <p className="text-[12px] text-red-500 -mb-2">{error}</p>
+)}
+<button
+  onClick={handleForgotPassword}
+  disabled={loading}
+  className="w-full h-[52px] rounded-[15px] bg-[#6B2D3E]"
         >
           Send reset link
         </button>

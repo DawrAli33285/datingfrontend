@@ -44,11 +44,12 @@ export default function SignInPage() {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
         localStorage.setItem('isPartner', res.data.user.role === 'partner' ? 'true' : 'false');
-        const { firstName: fn, partnerMode } = res.data.user;
-
- 
+        const { firstName: fn, partnerMode, role } = res.data.user
         let destination = '/name';
         if (inviteToken) {
+          localStorage.setItem('isPartner', 'true');
+          destination = '/partner-review';
+        }else if (role === 'partner') {
           localStorage.setItem('isPartner', 'true');
           destination = '/partner-review';
         } else if (fn && !partnerMode) {
@@ -63,6 +64,8 @@ export default function SignInPage() {
         showToast('Welcome back!', 'success');
         setTimeout(() => navigate(destination), 1500);
       } catch (err) {
+        console.log(err)
+        console.log("ERROR")
         showToast('Server error, please try again.');
       } finally {
         setGoogleLoading(false);
@@ -88,11 +91,14 @@ export default function SignInPage() {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
   
-      const { firstName: fn, partnerMode } = res.data.user;
+      const { firstName: fn, partnerMode, role } = res.data.user
    
       let destination = '/name';
       if (inviteToken) {
         destination = '/partner-review'; // ← Person B, always goes here
+      } else if (role === 'partner') {
+        localStorage.setItem('isPartner', 'true');
+        destination = '/partner-review';
       } else if (fn && !partnerMode) {
         destination = '/together';
       } else if (partnerMode === 'together') {
