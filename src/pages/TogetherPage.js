@@ -5,20 +5,7 @@ import Toast from '../components/Toast';
 import { BASE_URL } from '../components/baseurl';
 
 const modes = [
-  {
-    id: 0,
-    value: 'together',
-    destination: '/dashboard',
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B2D3E" strokeWidth="1.5" strokeLinecap="round">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-      </svg>
-    ),
-    title: "We're here together",
-    desc: "We'll go through the pact side by side, answering together as we go.",
-  },
+  
   {
     id: 1,
     value: 'invite',
@@ -32,20 +19,8 @@ const modes = [
     title: 'Invite my partner first',
     desc: "Send an invitation — they'll create their own account and join the pact when ready.",
   },
-  {
-    id: 2,
-    value: 'explore',
-    destination: '/dashboard',
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A5560" strokeWidth="1.5" strokeLinecap="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 8v4M12 16h.01"/>
-      </svg>
-    ),
-    title: 'Just explore for now',
-    desc: 'See how Patto works before bringing your partner in.',
-  },
-];
+ 
+];  
 
 export default function TogetherPage() {
   const navigate = useNavigate();
