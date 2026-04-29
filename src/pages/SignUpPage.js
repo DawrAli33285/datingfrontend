@@ -227,9 +227,13 @@ export default function SignUpPage() {
           </button>
           <p className="text-[12px] text-[#7A5560] leading-[1.6]">
             I agree to the{' '}
-            <span className="text-[#6B2D3E] underline underline-offset-[2px] cursor-pointer">Terms of Service</span>
+            <span onClick={()=>{
+              navigate('/terms-of-service')
+            }} className="text-[#6B2D3E] underline underline-offset-[2px] cursor-pointer">Terms of Service</span>
             {' '}and{' '}
-            <span className="text-[#6B2D3E] underline underline-offset-[2px] cursor-pointer">Privacy Policy</span>
+            <span onClick={()=>{
+              navigate('/privacy-policy')
+            }} className="text-[#6B2D3E] underline underline-offset-[2px] cursor-pointer">Privacy Policy</span>
           </p>
         </div>
 

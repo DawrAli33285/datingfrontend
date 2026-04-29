@@ -393,12 +393,7 @@ export default function AccountPage() {
             icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A5560" strokeWidth="1.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>}
             label="Update profile"
           />
-          <RowLink
-            onClick={() => {}}
-            label="Delete account"
-            danger
-            icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E24B4A" strokeWidth="1.5" strokeLinecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>}
-          />
+         
         </div>
 
         {/* Sign out */}

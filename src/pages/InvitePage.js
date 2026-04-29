@@ -232,14 +232,7 @@ export default function InvitePage() {
           {loading ? 'Sending...' : activeTab === 0 ? 'Send invitation & continue →' : 'Continue →'}
         </button>
 
-        <div className="text-center">
-          <span
-            onClick={() => navigate('/topics')}
-            className="text-[12.5px] text-[#B8999F] underline underline-offset-[3px] cursor-pointer"
-          >
-            Skip for now
-          </span>
-        </div>
+       
 
       </div>
 

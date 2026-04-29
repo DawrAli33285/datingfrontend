@@ -33,7 +33,9 @@ export default function WaitingPage() {
         }
 
         if (reviewRes.ok) {
-          const [p1, p2] = reviewData.names.split(' & ');
+          
+         let p1=reviewData.partnerNames.partner1
+         let p2=reviewData.partnerNames.partner2
           setNames({ partner1: p1 || 'Partner 1', partner2: p2 || 'Partner 2' });
         }
       } catch (err) {

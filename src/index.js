@@ -46,6 +46,9 @@ import {
   ElementsConsumer,
 } from '@stripe/react-stripe-js';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import TOS from './pages/TosPage';
+import Privacy from './pages/PrivacyPolicy';
+import Cookies from './pages/CookiePolicyPage';
 
 
 const GOOGLE_CLIENT_ID = '90321078061-0170dr3h7mknf595o674b7ctu70av45u.apps.googleusercontent.com';
@@ -69,6 +72,9 @@ const router = createBrowserRouter([
       { path: '/join', element: <PartnerJoinPage /> },
       { path: '/complete', element: <CompletePage /> },
       { path:"/reset-password", element:<ResetPasswordPage/>},
+      {path:'/terms-of-service',element:<TOS/>},
+      {path:'/privacy-policy',element:<Privacy/>},
+      {path:'/cookie-policy',element:<Cookies/>},
      
 
       // ── Owner-only routes (blocked for invited partner) ───

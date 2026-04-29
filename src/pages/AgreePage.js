@@ -17,46 +17,47 @@ export default function AgreePage() {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
-  
       try {
-        // 1. Get current user
         const userRes = await fetch(`${BASE_URL}/account`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData = await userRes.json();
         const currentUser = userData.user;
   
-        // 2. Get pact (also gives us pactId)
         const pactRes = await fetch(`${BASE_URL}/pact/review/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const pactData = await pactRes.json();
   
         if (pactRes.ok) {
-          const [p1, p2] = pactData.names.split(' & ');
-          setNames({ partner1: p1 || 'Partner 1', partner2: p2 || 'Partner 2' });
+          const { partner1, partner2 } = pactData.partnerNames;
+          setNames({ partner1: partner1 || 'Partner 1', partner2: partner2 || 'Partner 2' });
           setCreatedAt(pactData.createdAt);
   
-          if (currentUser.firstName === p1) {
+          if (currentUser.firstName === partner1) {
             setMySlot('partner1');
-          } else {
+          } else if (currentUser.firstName === partner2) {
             setMySlot('partner2');
           }
   
-          // ✅ Use pactId from API, not localStorage
           const resolvedPactId = pactData.pactId;
   
-          // 3. Check signatures
           const sigRes = await fetch(`${BASE_URL}/pact/${resolvedPactId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const sigData = await sigRes.json();
   
           if (sigRes.ok && sigData.signatures) {
-            // Only show partner as agreed if both signed
-            if (sigData.signatures.length >= 2) setPartnerAgreed(true);
+            const mySignature = sigData.signatures.find(
+              sig => sig.user?._id === currentUser._id || sig.user === currentUser._id
+            );
+            if (mySignature) setMyAgreed(true);
+          
+            const partnerSignature = sigData.signatures.find(
+              sig => sig.user?._id !== currentUser._id && sig.user !== currentUser._id
+            );
+            if (partnerSignature) setPartnerAgreed(true);
           }
-
         }
       } catch (err) {
         console.log(err);
@@ -65,35 +66,18 @@ export default function AgreePage() {
     fetchData();
   }, []);
 
-
   const handleSign = async () => {
-    console.log('mySlot:', mySlot);
-  console.log('names:', names);
-
-
     const token = localStorage.getItem('token');
-  
-    if (myAgreed) {
-      if(localStorage.getItem('isPartner') === 'true'){
-        navigate('/partner-pact');
-       }else{
-
-         navigate('/waiting');
-       }
-     
-      return;
-    }
-  
     setLoading(true);
     setError(null);
   
     try {
-      // Get pactId from API
       const pactRes = await fetch(`${BASE_URL}/pact/review/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const pactData = await pactRes.json();
       const resolvedPactId = pactData.pactId;
+      console.log('signing pactId:', resolvedPactId);
   
       const res = await fetch(`${BASE_URL}/${resolvedPactId}/sign`, {
         method: 'POST',
@@ -105,27 +89,18 @@ export default function AgreePage() {
       });
   
       const data = await res.json();
-      console.log("DATA")
-      console.log(data)
+      console.log('sign response:', data);
+  
       if (!res.ok) {
         if (data.message === 'You have already signed this pact') {
-         if(localStorage.getItem('isPartner') === 'true'){
-          navigate('/partner-pact');
-         }else{
-
-           navigate('/waiting');
-         }
+          navigate(localStorage.getItem('isPartner') === 'true' ? '/partner-pact' : '/waiting');
           return;
         }
         setError(data.message || 'Something went wrong');
         return;
       }
-      if(localStorage.getItem('isPartner') === 'true'){
-        navigate('/partner-pact');
-       }else{
-
-         navigate('/waiting');
-       }
+  
+      navigate(localStorage.getItem('isPartner') === 'true' ? '/partner-pact' : '/waiting');
     } catch (err) {
       setError('Network error. Please try again.');
     } finally {

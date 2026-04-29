@@ -25,6 +25,8 @@ export default function PartnerReviewPage() {
   const [votes, setVotes] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [noPactYet, setNoPactYet] = useState(false);
+
 
   useEffect(() => {
     const fetchPact = async () => {
@@ -33,11 +35,27 @@ export default function PartnerReviewPage() {
         const res = await fetch(`${BASE_URL}/pact/review/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (res.status === 404) {
+          setNoPactYet(true);
+          setLoading(false);
+          return;
+        }
+        
         if (!res.ok) throw new Error('Failed to fetch pact');
+        
         const data = await res.json();
+        
+        if (data.code === 'PACT_NOT_READY') {
+          setNoPactYet(true);       // reuse the same waiting UI
+          setPartnerName(data.partnerName);  // so you can personalise the message
+          setLoading(false);  
+          return;
+        }
+        
         setTopics(data.topics);
         setPactId(data.pactId);
         setPartnerName(data.names);
+
       } catch (err) {
         console.log("ERROR")
         console.log(err)
@@ -98,6 +116,32 @@ export default function PartnerReviewPage() {
   if (error) return (
     <div className="flex-1 flex items-center justify-center bg-[#FAF8F4]">
       <p className="text-red-400 text-sm">{error}</p>
+    </div>
+  );
+
+
+  if (noPactYet) return (
+    <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] px-8 gap-4">
+      <div className="w-12 h-12 rounded-full bg-[#F0E9F1] flex items-center justify-center text-2xl">
+        ✦
+      </div>
+      <div className="text-center">
+        <p className="font-['Cormorant_Garamond'] text-[22px] text-[#2A1A1F] mb-1">
+          Not quite ready yet
+        </p>
+        <p className="text-[13px] text-[#B8999F] leading-relaxed">
+          {partnerName
+            ? `${partnerName} hasn't finished creating the pact yet.`
+            : "Your partner hasn't finished creating the pact yet."}
+          {" "}You'll be able to review and respond once they're done.
+        </p>
+      </div>
+      <button
+        onClick={() => window.location.reload()}
+        className="mt-2 px-5 py-2.5 rounded-[10px] border border-[rgba(107,45,62,0.2)] text-[13px] text-[#7A5560] bg-white"
+      >
+        Check again
+      </button>
     </div>
   );
 
