@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Toast from '../components/Toast';
@@ -14,6 +14,7 @@ export default function InvitePage() {
   const [inviteLink, setInviteLink] = useState('');
   const [linkLoading, setLinkLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [hasPartner, setHasPartner] = useState(false);
 
   const tabs = ['Email', 'Link'];
 
@@ -84,6 +85,22 @@ export default function InvitePage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+
+  useEffect(() => {
+    const checkExistingPartner = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`${BASE_URL}/invitations/check-partner`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setHasPartner(res.data.hasPartner);
+      } catch {
+       
+      }
+    };
+    checkExistingPartner();
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">
@@ -231,6 +248,14 @@ export default function InvitePage() {
         >
           {loading ? 'Sending...' : activeTab === 0 ? 'Send invitation & continue →' : 'Continue →'}
         </button>
+        {hasPartner && (
+  <button
+    onClick={() => navigate('/topics')}
+    className="w-full h-[52px] rounded-[15px] border border-[rgba(107,45,62,0.13)] text-[#7A5560] text-[15px] font-medium hover:bg-[#F0E9E3] transition-colors"
+  >
+    Skip — I already have a partner →
+  </button>
+)}
 
        
 
