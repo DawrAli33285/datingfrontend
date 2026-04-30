@@ -89,12 +89,12 @@ const Nav = ({ setPage }) => (
     justifyContent: "space-between", background: "rgba(250,247,242,.88)",
     backdropFilter: "blur(12px)", borderBottom: ".5px solid #E4D8CC",
   }}>
-    <a href="#" onClick={() => setPage("landing")} style={{ ...serif, fontStyle: "italic", fontSize: 28, color: t.rose, letterSpacing: "-.5px", textDecoration: "none" }}>patto</a>
+    <a href="#" onClick={() => setPage("landing")} style={{ ...serif, fontStyle: "italic", fontSize: 28, color: t.rose, letterSpacing: "-.5px", textDecoration: "none" }}><PattoIcon/></a>
     <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
       {[["How it works", "#how"], ["Topics", "#topics"], ["Pricing", "#pricing"]].map(([label, href]) => (
         <a key={label} href={href} className="nav-link" style={{ ...sans, fontSize: 13, color: t.tm, textDecoration: "none", letterSpacing: ".02em", transition: "color .15s" }}>{label}</a>
       ))}
-      <button onClick={() => setPage("dashboard")} className="nav-link" style={{ ...sans, fontSize: 13, color: t.tm, background: "none", border: "none", cursor: "pointer", letterSpacing: ".02em" }}>Demo app →</button>
+      
       <a href="#pricing" style={{
         ...sans, padding: "9px 22px", background: t.rose, color: t.cream,
         borderRadius: 24, fontSize: 13, fontWeight: 500, textDecoration: "none",
@@ -145,10 +145,7 @@ const Hero = ({ setPage }) => (
           Start for free
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
         </BtnPrimary>
-        <a href="#how" style={{ ...sans, padding: "14px 24px", color: t.tm, fontSize: 15, display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" /></svg>
-          See how it works
-        </a>
+      
       </div>
 
       <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
@@ -380,7 +377,7 @@ const CtaBand = ({ setPage }) => (
     <p style={{ ...sans, fontSize: 16, color: "rgba(250,247,242,.7)", marginBottom: 36 }}>It takes 15 minutes. It might change everything.</p>
     <div style={{ display: "flex", gap: 12, justifyContent: "center", alignItems: "center" }}>
       <button onClick={() => setPage("dashboard")} style={{ ...sans, padding: "14px 36px", background: t.w, color: t.rose, border: "none", borderRadius: 28, fontSize: 15, fontWeight: 500, cursor: "pointer", transition: "all .18s" }}>Create your free account →</button>
-      <button onClick={() => setPage("conversation")} style={{ ...sans, padding: "14px 24px", background: "transparent", color: "rgba(250,247,242,.8)", border: ".5px solid rgba(255,255,255,.3)", borderRadius: 28, fontSize: 15, cursor: "pointer", transition: "all .18s" }}>See the app in action</button>
+      
     </div>
     <div style={{ ...sans, fontSize: 12.5, color: "rgba(250,247,242,.45)", marginTop: 20 }}>No credit card required · Free forever plan available · Trusted by 2,400+ couples</div>
   </section>
@@ -605,6 +602,7 @@ const DemoNav = ({ page, setPage }) => (
 ══════════════════════════════════════════════════════════════════════════ */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import PattoIcon from "../components/PattoIcon";
 
 function useIsDesktop(breakpoint = 1024) {
   const [isDesktop, setIsDesktop] = useState(

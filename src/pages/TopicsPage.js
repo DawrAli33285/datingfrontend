@@ -80,6 +80,7 @@ export default function TopicsPage() {
       });
   
       const data = await res.json();
+      
       if (!res.ok) { setError(data.message || 'Something went wrong'); return; }
       localStorage.setItem('pactId', data.pactId); 
       const firstTopic = data.selectedTopics?.[0] || selectedTopics[0];

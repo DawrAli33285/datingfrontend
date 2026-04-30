@@ -85,14 +85,7 @@ export default function ReviewPactPage() {
 
       {/* Header */}
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
-        <button
-          onClick={() => navigate(-1)}
-          className="w-[34px] h-[34px] rounded-full border border-[rgba(107,45,62,0.13)] bg-[#FAF8F4] flex items-center justify-center hover:bg-[#F5E8EB] transition-colors"
-        >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2A1A1F" strokeWidth="2" strokeLinecap="round">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-        </button>
+        
         <div>
           <div className="font-['Cormorant_Garamond'] text-[22px] font-normal text-[#2A1A1F]">Review your pact</div>
           <div className="text-[12px] text-[#B8999F] mt-0.5">Read through before signing</div>
@@ -136,18 +129,18 @@ export default function ReviewPactPage() {
     §{idx + 1} · {topic.title}{topic.subtitle ? ` · ${topic.subtitle}` : ''}
   </div>
   <button
-    onClick={() => {
-      const titleToRoute = {
-        'Money & finances': '/chat/money',
-        'Fidelity & boundaries': '/chat/fidelity',
-        'Home & living together': '/chat/home',
-        'Future': '/chat/future',
-        'Conflict': '/chat/conflict',
-        'Separation': '/chat/separation',
-      };
-      const route = titleToRoute[topic.title];
-      if (route) navigate(route);
-    }}
+  onClick={() => {
+    const titleToRoute = {
+      'Money & finances': '/chat/money',
+      'Fidelity & boundaries': '/chat/fidelity',
+      'Home & living together': '/chat/home',
+      'Future plans': '/chat/future',
+      'Conflict & repair': '/chat/conflict',
+      'Separation': '/chat/separation',
+    };
+    const route = titleToRoute[topic.title];
+    if (route) navigate(`${route}?edit_topic=true`);
+  }}
     className="w-[28px] h-[28px] rounded-full border border-[rgba(107,45,62,0.13)] bg-[#FAF8F4] flex items-center justify-center hover:bg-[#F5E8EB] transition-colors flex-shrink-0"
   >
     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6B2D3E" strokeWidth="2" strokeLinecap="round">
@@ -233,6 +226,16 @@ export default function ReviewPactPage() {
   </span>
 </div>
 
+<div className="text-center pb-2">
+  <span
+    onClick={()=>{
+      navigate('/dashboard')
+    }}
+    className="text-[12.5px] text-[#B8999F] cursor-pointer"
+  >
+    Go to dashboard
+  </span>
+</div>
       </div>
 
       <div className="h-[30px] flex justify-center items-center flex-shrink-0">

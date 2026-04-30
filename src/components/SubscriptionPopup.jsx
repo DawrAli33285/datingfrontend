@@ -92,15 +92,14 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
-        onClick={onClose}
+      
       />
 
-      <div className="relative w-full max-w-md bg-[#FAF8F4] rounded-t-[28px] px-6 pt-5 pb-8 shadow-2xl">
-
-        <div className="w-10 h-1 bg-[rgba(107,45,62,0.15)] rounded-full mx-auto mb-5" />
+<div className="relative w-full max-w-md bg-[#FAF8F4] rounded-[28px] px-6 pt-5 pb-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+       
 
         {checking ? (
           <div className="flex flex-col items-center justify-center py-10 gap-3">

@@ -70,12 +70,12 @@ function EditProfilePopup({ user, onClose, onSaved }) {
   return (
     // Backdrop
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/30"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4"
       onClick={onClose}
     >
       {/* Sheet */}
       <div
-        className="w-full max-w-md bg-white rounded-t-[24px] px-5 pt-5 pb-8 flex flex-col gap-4"
+        className="w-full max-w-md bg-white rounded-[24px] px-5 pt-5 pb-8 flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle */}
@@ -283,15 +283,6 @@ export default function AccountPage() {
       />
 
 
-{showSubscriptionPopup && (
-        <SubscriptionPopup
-          onClose={() => setShowSubscriptionPopup(false)}
-          onSuccess={() => {
-            setUserData((prev) => ({ ...prev, isPremium: true }));
-            showToast("You're now Premium!", 'success');
-          }}
-        />
-      )}
 
       {showEditPopup && userData && (
         <EditProfilePopup

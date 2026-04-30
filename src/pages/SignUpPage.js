@@ -246,6 +246,17 @@ export default function SignUpPage() {
           {loading ? 'Creating account...' : 'Create account'}
         </button>
 
+        <div className="text-center">
+            <span className="text-[13px] text-[#7A5560]">
+              Already have an account?{' '}
+              <span
+                onClick={() => navigate('/signin')}
+                className="text-[#6B2D3E] underline underline-offset-[3px] cursor-pointer"
+              >
+               Sign in
+              </span>
+            </span>
+          </div>
         {/* Privacy note */}
         <div className="bg-[#F0E9E3] rounded-xl px-3 py-2.5">
           <p className="text-[11.5px] text-[#7A5560] leading-[1.6]">
