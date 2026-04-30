@@ -10,7 +10,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-[#EDE6DF] flex items-center justify-center">
-      <div className="max-w-[800px] w-full p-[20px] bg-[#FAF8F4]">
+      <div className="w-[430px] lg:w-[80%] lg:p-0 bg-[#FAF8F4]">
         <Outlet />
       </div>
     </div>

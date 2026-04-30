@@ -6,6 +6,7 @@ import { gapi } from 'gapi-script';
 import Toast from '../components/Toast';
 import { BASE_URL } from '../components/baseurl';
 import { useGoogleLogin } from '@react-oauth/google';
+import PattoIcon from '../components/PattoIcon';
 
 const GOOGLE_CLIENT_ID = '90321078061-0170dr3h7mknf595o674b7ctu70av45u.apps.googleusercontent.com';
 
@@ -32,7 +33,6 @@ export default function SignInPage() {
       try {
         setGoogleLoading(true);
   
-        // Get user profile from Google
         const profileRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
@@ -43,13 +43,12 @@ export default function SignInPage() {
   
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
-        localStorage.setItem('isPartner', res.data.user.role === 'partner' ? 'true' : 'false');
-        const { firstName: fn, partnerMode, role } = res.data.user
+  
+        const { firstName: fn, partnerMode, role } = res.data.user;
+  
         let destination = '/name';
-        if (inviteToken) {
-          localStorage.setItem('isPartner', 'true');
-          destination = '/partner-review';
-        }else if (role === 'partner') {
+  
+        if (role === 'partner') {
           localStorage.setItem('isPartner', 'true');
           destination = '/partner-review';
         } else if (fn && !partnerMode) {
@@ -61,11 +60,11 @@ export default function SignInPage() {
         } else if (partnerMode === 'explore') {
           destination = '/dashboard';
         }
+  
         showToast('Welcome back!', 'success');
         setTimeout(() => navigate(destination), 1500);
       } catch (err) {
-        console.log(err)
-        console.log("ERROR")
+        console.log(err);
         showToast('Server error, please try again.');
       } finally {
         setGoogleLoading(false);
@@ -75,7 +74,6 @@ export default function SignInPage() {
       showToast('Server error, please try again.');
     },
   });
-  
 
 
 
@@ -94,9 +92,7 @@ export default function SignInPage() {
       const { firstName: fn, partnerMode, role } = res.data.user
    
       let destination = '/name';
-      if (inviteToken) {
-        destination = '/partner-review'; // ← Person B, always goes here
-      } else if (role === 'partner') {
+      if (role === 'partner') {
         localStorage.setItem('isPartner', 'true');
         destination = '/partner-review';
       } else if (fn && !partnerMode) {
@@ -135,7 +131,7 @@ export default function SignInPage() {
       <div className="flex-1 flex flex-col px-7 pt-10">
 
         <div className="font-['Cormorant_Garamond'] text-[15px] italic text-[#D4899A] mb-7">
-          patto
+         <PattoIcon/>
         </div>
 
         <h1 className="font-['Cormorant_Garamond'] text-[34px] font-normal text-[#2A1A1F] leading-[1.1] mb-7">

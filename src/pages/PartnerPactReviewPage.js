@@ -10,20 +10,29 @@ export default function PartnerPactReviewPage() {
   const [createdAt, setCreatedAt] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pactId, setPactId] = useState(null);
 
   useEffect(() => {
     const fetchPact = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/pact/review/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) throw new Error('Failed to fetch pact');
-        const data = await res.json();
+
+        const [reviewRes, pactRes] = await Promise.all([
+          fetch(`${BASE_URL}/pact/review/me`, { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(`${BASE_URL}/pact/me`, { headers: { Authorization: `Bearer ${token}` } }),
+        ]);
+
+        if (!reviewRes.ok) throw new Error('Failed to fetch pact');
+        const data = await reviewRes.json();
         setTopics(data.topics || []);
         setNames(data.names || '');
         setStatus(data.status || '');
         setCreatedAt(data.createdAt);
+
+        if (pactRes.ok) {
+          const pactData = await pactRes.json();
+          setPactId(pactData.pactId);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -121,9 +130,32 @@ export default function PartnerPactReviewPage() {
                 ))}
 
                 {/* Partner review badge */}
-                {badge && (
-                  <div className={`mt-1 rounded-[9px] px-3 py-2 text-[11.5px] font-medium ${badge.bg} ${badge.text}`}>
-                    Your review: {badge.label}
+              {/* Partner review badge */}
+              {badge && (
+                  <div className="flex flex-col gap-1.5">
+                    <div className={`mt-1 rounded-[9px] px-3 py-2 text-[11.5px] font-medium ${badge.bg} ${badge.text}`}>
+                      Your review: {badge.label}
+                    </div>
+                    <button
+                      onClick={async () => {
+                        const newStatus = window.prompt('Change review to: agree, agree_with_change, or needs_talk');
+                        if (!newStatus) return;
+                        const token = localStorage.getItem('token');
+                        const res = await fetch(`${BASE_URL}/${pactId}/partner-review`, {
+                          method: 'PUT',
+                          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                          body: JSON.stringify({ topicId: topic.id, status: newStatus }),
+                        });
+                        if (res.ok) {
+                          setTopics(prev => prev.map(t =>
+                            t.id === topic.id ? { ...t, partnerReview: { status: newStatus } } : t
+                          ));
+                        }
+                      }}
+                      className="text-[11px] text-[#B8999F] underline underline-offset-2 text-left hover:text-[#7A5560] transition-colors"
+                    >
+                      Edit review
+                    </button>
                   </div>
                 )}
               </div>

@@ -38,6 +38,7 @@ export default function ChatPage({ label, backRoute, topicId }) {
   const [saveError, setSaveError] = useState(null);
   const [nextRoute, setNextRoute] = useState('/review');
   const paywallShown = useRef(false);
+  const PAYWALL_THRESHOLD = 20;
 
   const progress = questions.length === 0 ? 0 : step >= questions.length ? 100 : Math.round((step / questions.length) * 100);
 
@@ -49,7 +50,7 @@ export default function ChatPage({ label, backRoute, topicId }) {
       try {
         const prompt = `You are Patto, a warm relationship assistant helping couples build a relationship agreement.
 
-Generate exactly 3 questions for the topic: "${TOPIC_LABELS[topicId]}".
+Generate exactly 10 questions for the topic: "${TOPIC_LABELS[topicId]}".
 
 Each question should feel like a natural conversation between partners — warm, direct, not clinical.
 Each question must have exactly 4 short answer options (max 10 words each).
@@ -183,16 +184,19 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     saveAnswers();
   }, [answers, questions]);
 
-  const choose = (optionIndex) => {
+const choose = (optionIndex) => {
     const newAnswers = [...answers, optionIndex];
     setAnswers(newAnswers);
     setStep(step + 1);
-    if (!isPremium && newAnswers.length === 2 && !paywallShown.current) {
+
+    const totalAnswered = parseInt(localStorage.getItem('totalAnswers') || '0') + 1;
+    localStorage.setItem('totalAnswers', totalAnswered);
+
+    if (!isPremium && totalAnswered === PAYWALL_THRESHOLD && !paywallShown.current) {
       paywallShown.current = true;
       setShowPaywall(true);
     }
   };
-
   // ── Loading state ────────────────────────────────────────────────────────
   if (loadingQuestions) {
     return (

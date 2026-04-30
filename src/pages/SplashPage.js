@@ -260,9 +260,9 @@ const HowItWorks = () => {
 ══════════════════════════════════════════════════════════════════════════ */
 const Topics = () => {
   const items = [
-    { title: "Money & finances", body: "Who pays what, how you split costs, what happens if incomes change significantly.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg> },
     { title: "Fidelity & boundaries", body: "What exclusivity means to both of you — and what happens if a line is crossed.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg> },
     { title: "Home & living", body: "Space, guests, big decisions. What shared life actually looks like, day to day.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg> },
+    { title: "Money & finances", body: "Who pays what, how you split costs, what happens if incomes change significantly.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg> },
     { title: "Future & plans", body: "Children, career moves, where to live. Conversations worth having before decisions are made.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg> },
     { title: "Conflict & repair", body: "How you both want to handle disagreements — before they become habits.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg> },
     { title: "Annual check-in", body: "Life changes. Your pact should too. A guided yearly review keeps everything current.", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={t.roseM} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" /></svg> },
@@ -376,7 +376,7 @@ const CtaBand = ({ setPage }) => (
     <h2 style={{ ...serif, fontSize: "clamp(36px,4vw,54px)", color: t.cream, letterSpacing: "-.8px", marginBottom: 16 }}>Start the conversation<br />you've been putting off.</h2>
     <p style={{ ...sans, fontSize: 16, color: "rgba(250,247,242,.7)", marginBottom: 36 }}>It takes 15 minutes. It might change everything.</p>
     <div style={{ display: "flex", gap: 12, justifyContent: "center", alignItems: "center" }}>
-      <button onClick={() => setPage("dashboard")} style={{ ...sans, padding: "14px 36px", background: t.w, color: t.rose, border: "none", borderRadius: 28, fontSize: 15, fontWeight: 500, cursor: "pointer", transition: "all .18s" }}>Create your free account →</button>
+      <button onClick={() => window.location.href='/signin'} style={{ ...sans, padding: "14px 36px", background: t.w, color: t.rose, border: "none", borderRadius: 28, fontSize: 15, fontWeight: 500, cursor: "pointer", transition: "all .18s" }}>Create your free account →</button>
       
     </div>
     <div style={{ ...sans, fontSize: 12.5, color: "rgba(250,247,242,.45)", marginTop: 20 }}>No credit card required · Free forever plan available · Trusted by 2,400+ couples</div>
@@ -390,13 +390,12 @@ const Footer = () => (
   <>
     <footer style={{ padding: "48px 48px 32px", background: t.roseD, display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48 }}>
       <div>
-        <span style={{ ...serif, fontStyle: "italic", fontSize: 32, color: t.cream, display: "block", marginBottom: 12 }}>patto</span>
+        <span style={{ ...serif, fontStyle: "italic", fontSize: 32, color: t.cream, display: "block", marginBottom: 12 }}><PattoIcon/></span>
         <p style={{ ...sans, fontSize: 13, color: "rgba(250,247,242,.45)", lineHeight: 1.7, maxWidth: 280 }}>A shared promise between two people who want to be honest with each other — today and in the future.</p>
       </div>
       {[
-        { title: "Product", links: [["How it works", "#how"], ["Topics", "#topics"], ["Pricing", "#pricing"], ["Demo", "#"]] },
-        { title: "Company", links: [["About", "#"], ["Blog", "#"], ["Contact", "#"], ["hello@patto.pro", "#"]] },
-        { title: "Legal", links: [["Terms of Service", "#"], ["Privacy Policy", "#"], ["Cookie Policy", "#"]] },
+       
+        { title: "Legal", links: [["Terms of Service", "/terms-of-service"], ["Privacy Policy", "/privacy-policy"], ["Cookie Policy", "/cookie-policy"]] },
       ].map(col => (
         <div key={col.title}>
           <h4 style={{ ...sans, fontSize: 11, fontWeight: 500, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(250,247,242,.35)", marginBottom: 16 }}>{col.title}</h4>
