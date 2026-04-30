@@ -44,12 +44,17 @@ export default function SignInPage() {
   
         console.log('🔴 Raw API user object:', JSON.stringify(res.data.user, null, 2));
 
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-  
+    
         const { firstName: fn, partnerMode, role } = res.data.user;
   console.log('role value is:', role, '| typeof:', typeof role);
         let destination = '/name';
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('pactId');
+        localStorage.removeItem('isPartner');
+
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
   
         if (role === 'partner') {
           localStorage.setItem('isPartner', 'true');
@@ -87,12 +92,19 @@ export default function SignInPage() {
       setLoading(true);
       const res = await axios.post(`${BASE_URL}/login`, { email, password });
   
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-  
+
       const { firstName: fn, partnerMode, role } = res.data.user
    
       let destination = '/name';
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('pactId');
+      localStorage.removeItem('isPartner');
+
+
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+  
       if (role === 'partner') {
         localStorage.setItem('isPartner', 'true');
         destination = '/partner-review';

@@ -16,11 +16,24 @@ export default function CheckInPage() {
   const [submitting, setSubmitting] = useState(false);
 
   const token = localStorage.getItem('token');
-  const pactId = localStorage.getItem('pactId');
-
+ 
  
   useEffect(() => {
     const start = async () => {
+
+      const pactMeRes = await fetch(`${BASE_URL}/pact/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (!pactMeRes.ok) {
+        setErrorMsg('No pact found. Please go back to your dashboard.');
+        setPhase('error');
+        return;
+      }
+      const pactMeData = await pactMeRes.json();
+      const pactId = pactMeData.pactId;
+
+      
       if (!pactId) {
         setErrorMsg('No pact found. Please go back to your dashboard.');
         setPhase('error');

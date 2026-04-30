@@ -12,9 +12,20 @@ export default function WaitingPage() {
   useEffect(() => {
     const fetchStatus = async () => {
       const token = localStorage.getItem('token');
-      const pactId = localStorage.getItem('pactId');
+     
 
       try {
+        const pactMeRes = await fetch(`${BASE_URL}/pact/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!pactMeRes.ok) {
+          console.error('Failed to fetch pact ID');
+          return;
+        }
+
+        const pactMeData = await pactMeRes.json();
+        const pactId = pactMeData.pactId;
+
         const [pactRes, reviewRes] = await Promise.all([
           fetch(`${BASE_URL}/pact/${pactId}`, {
             headers: { Authorization: `Bearer ${token}` },

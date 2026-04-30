@@ -146,8 +146,18 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
 
     const saveAnswers = async () => {
       const token = localStorage.getItem('token');
-      const pactId = localStorage.getItem('pactId');
-
+      let pactId;
+      try {
+        const pactMeRes = await fetch(`${BASE_URL}/pact/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!pactMeRes.ok) { setSaveError('No pact found. Please restart.'); return; }
+        const pactMeData = await pactMeRes.json();
+        pactId = pactMeData.pactId;
+      } catch {
+        setSaveError('No pact found. Please restart.');
+        return;
+      }
       if (!pactId) { setSaveError('No pact found. Please restart.'); return; }
 
       setSaving(true);
