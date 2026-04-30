@@ -37,15 +37,18 @@ export default function SignInPage() {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
   
+        
         const { email, given_name: firstName } = profileRes.data;
   
         const res = await axios.post(`${BASE_URL}/google-auth`, { email, firstName });
   
+        console.log('🔴 Raw API user object:', JSON.stringify(res.data.user, null, 2));
+
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
   
         const { firstName: fn, partnerMode, role } = res.data.user;
-  
+  console.log('role value is:', role, '| typeof:', typeof role);
         let destination = '/name';
   
         if (role === 'partner') {
