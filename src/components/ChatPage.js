@@ -74,7 +74,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer xai-eYRxk9A3HG6wOzbhEkgsBImqA17wsWJu33kiwaAAzQeBTBBpQUsLJhJBlwT1BF3JBV57YbnoHve0np9D`,
+            'Authorization': `Bearer ${process.env.REACT_APP_XAI_API_KEY}`,
           },
           body: JSON.stringify({
             model: 'grok-3-mini',
