@@ -22,7 +22,7 @@ export default function ReviewPactPage() {
         console.log(res.data)
         setPact(res.data);
       } catch {
-        // fail silently
+     
       } finally {
         setLoading(false);
       }
@@ -83,7 +83,7 @@ export default function ReviewPactPage() {
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">
 
-      {/* Header */}
+     
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         
         <div>
@@ -94,7 +94,7 @@ export default function ReviewPactPage() {
 
       <div className="px-5 py-3.5 flex flex-col gap-2.5 overflow-y-auto">
 
-        {/* Pact header card */}
+       
         <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[16px] p-5 text-center">
           <div className="font-['Cormorant_Garamond'] text-[13px] italic text-[#D4899A] tracking-[0.06em] mb-2">
             patto
@@ -112,7 +112,7 @@ export default function ReviewPactPage() {
           </p>
         </div>
 
-        {/* Loading state */}
+        
         {loading && (
   <div className="text-center text-[13px] text-[#B8999F] py-6">Loading your pact...</div>
 )}
@@ -151,7 +151,7 @@ export default function ReviewPactPage() {
 </div>
 
     <div className="px-3.5 py-3 flex flex-col gap-3">
-      {/* Q&A */}
+   
       {(topic.answers ?? []).map((qa, i) => (
         <div key={i} className="flex flex-col gap-1">
           <p className="text-[11px] text-[#B8999F] leading-[1.5]">{qa.question}</p>
@@ -162,7 +162,7 @@ export default function ReviewPactPage() {
         </div>
       ))}
 
-      {/* Partner review */}
+     
       {topic.partnerReview?.status && (
         <div className={`mt-1 rounded-[9px] px-3 py-2 text-[11.5px] font-medium ${
           topic.partnerReview.status === 'agree'
@@ -182,7 +182,6 @@ export default function ReviewPactPage() {
   </div>
 ))}
 
-        {/* Optional topics (completed only) */}
         {!loading && (pact?.optionalTopics ?? []).filter(t => t.isComplete).map(({ id, title, subtitle, answers }) => (
           <div key={id} className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] overflow-hidden">
             <div className="px-3.5 py-2.5 border-b border-[rgba(107,45,62,0.13)] flex justify-between items-center">
@@ -207,7 +206,7 @@ export default function ReviewPactPage() {
           </div>
         ))}
 
-        {/* Sign button — hidden once signed */}
+       
         {!loading && pact?.status !== 'signed' && (
           <button
             onClick={() => navigate('/agree')}

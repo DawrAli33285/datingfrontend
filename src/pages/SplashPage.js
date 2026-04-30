@@ -19,7 +19,7 @@ const t = {
   tealL: "#E8F5EE",
 };
 
-/* ─── Global styles injected once ──────────────────────────────────────── */
+
 const GlobalStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
@@ -103,24 +103,21 @@ const Nav = ({ setPage }) => (
   </nav>
 );
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   LANDING — HERO
-══════════════════════════════════════════════════════════════════════════ */
 const Hero = ({ setPage }) => (
   <section id="hero" style={{
     minHeight: "100vh", padding: "120px 48px 80px",
     display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80,
     alignItems: "center", position: "relative", overflow: "hidden",
   }}>
-    {/* bg */}
+   
     <div style={{
       position: "absolute", inset: 0, pointerEvents: "none",
       background: "radial-gradient(ellipse 60% 50% at 70% 40%, rgba(212,137,154,.12) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 20% 80%, rgba(107,45,62,.06) 0%, transparent 60%)",
     }} />
 
-    {/* left */}
+   
     <div>
-      {/* eyebrow */}
+    
       <div style={{
         display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 14px 5px 8px",
         background: t.roseLL, border: `.5px solid ${t.roseM}`, borderRadius: 20,
@@ -161,9 +158,9 @@ const Hero = ({ setPage }) => (
       </div>
     </div>
 
-    {/* right — phone */}
+   
     <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      {/* float cards */}
+ 
       <div className="float-card-1" style={{
         position: "absolute", top: "10%", right: -24, background: t.w, border: `.5px solid ${t.creamDD}`,
         borderRadius: 14, padding: "12px 16px", boxShadow: "0 8px 32px rgba(0,0,0,.08)",
@@ -181,7 +178,6 @@ const Hero = ({ setPage }) => (
         <div style={{ fontSize: 11, color: t.tm, marginTop: 2 }}>for both partners</div>
       </div>
 
-      {/* phone */}
       <div className="float-phone" style={{ width: 320 }}>
         <div style={{
           width: 320, borderRadius: 40, border: "7px solid #1A0F13", overflow: "hidden",
@@ -333,7 +329,7 @@ const Pricing = ({ setPage }) => {
         <p style={{ ...sans, fontSize: 16, color: t.tm, lineHeight: 1.7, maxWidth: 520, margin: "0 auto" }}>No tiers, no upsells, no legal complexity. Just clarity.</p>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 800, margin: "56px auto 0" }}>
-        {/* Free */}
+       
         <div style={{ background: t.w, border: `.5px solid ${t.creamDD}`, borderRadius: 24, padding: 36 }}>
           <div style={{ ...sans, fontSize: 12, fontWeight: 500, letterSpacing: ".06em", textTransform: "uppercase", color: t.rose, marginBottom: 24 }}>Free</div>
           <div style={{ ...serif, fontSize: 48, color: t.tx, lineHeight: 1, marginBottom: 4 }}>$0</div>
@@ -347,7 +343,7 @@ const Pricing = ({ setPage }) => {
           ))}
           <button onClick={() => window.location.href='/signup'} style={{ ...sans, display: "block", width: "100%", height: 50, marginTop: 28, borderRadius: 14, fontSize: 14, fontWeight: 500, cursor: "pointer", border: "none", background: t.creamD, color: t.tx, transition: "all .18s" }}>Get started free</button>
         </div>
-        {/* Paid */}
+       
         <div style={{ background: t.rose, border: `.5px solid ${t.rose}`, borderRadius: 24, padding: 36 }}>
           <div style={{ ...sans, fontSize: 12, fontWeight: 500, letterSpacing: ".06em", textTransform: "uppercase", color: t.roseM, marginBottom: 24 }}>Couple Plan</div>
           <div style={{ ...serif, fontSize: 48, color: t.cream, lineHeight: 1, marginBottom: 4 }}>$14</div>
@@ -494,7 +490,7 @@ const Conversation = ({ setPage }) => {
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gridTemplateRows: "64px 1fr", minHeight: "100vh" }}>
-      {/* topbar */}
+     
       <div style={{ gridColumn: "1/-1", background: t.w, borderBottom: `.5px solid ${t.creamDD}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px" }}>
         <span style={{ ...serif, fontStyle: "italic", fontSize: 24, color: t.rose }}>patto</span>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -507,7 +503,7 @@ const Conversation = ({ setPage }) => {
 
       <div style={{ background: t.cream, padding: "24px 28px", overflowY: "auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 24, height: "calc(100vh - 64px - 48px)" }}>
-          {/* chat */}
+        
           <div style={{ background: t.w, border: `.5px solid ${t.creamDD}`, borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div style={{ padding: "16px 20px", borderBottom: `.5px solid ${t.creamDD}` }}>
               <h3 style={{ ...serif, fontSize: 18, color: t.tx, fontWeight: 400, marginBottom: 6 }}>Money & finances</h3>
@@ -536,7 +532,7 @@ const Conversation = ({ setPage }) => {
             </div>
           </div>
 
-          {/* pact preview */}
+        
           <div style={{ background: t.w, border: `.5px solid ${t.creamDD}`, borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div style={{ padding: "16px 20px", borderBottom: `.5px solid ${t.creamDD}`, textAlign: "center" }}>
               <div style={{ ...serif, fontStyle: "italic", fontSize: 12, color: t.roseM, marginBottom: 4 }}>patto</div>

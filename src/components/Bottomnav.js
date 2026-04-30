@@ -13,7 +13,7 @@ export default function BottomNav() {
   if (isPartner) {
     return (
       <div className="border-t border-[rgba(107,45,62,0.13)] bg-white px-5 py-2.5 flex justify-around flex-shrink-0">
-        {/* Partner only sees: Home (partner-review) and Account */}
+     
         <button onClick={() => navigate('/partner-review')} className="flex flex-col items-center gap-1">
           <svg width="20" height="20" viewBox="0 0 24 24" fill={iconColor('/partner-review')}>
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>

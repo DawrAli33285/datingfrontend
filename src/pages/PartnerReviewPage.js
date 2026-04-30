@@ -175,7 +175,7 @@ export default function PartnerReviewPage() {
             </div>
 
             <div className="px-[14px] py-3 flex flex-col gap-[10px]">
-              {/* Show all Q&A pairs */}
+         
               {topic.answers.map((qa, i) => (
                 <div key={i} className="bg-[#FBF2F4] rounded-[9px] px-3 py-[10px]">
                   <div className="text-[10px] tracking-[0.04em] text-[#D4899A] uppercase mb-1">
@@ -186,7 +186,7 @@ export default function PartnerReviewPage() {
                 </div>
               ))}
 
-              {/* Vote buttons per topic */}
+           
               <div>
                 <div className="text-[11px] text-[#B8999F] mb-[7px]">How does this feel to you?</div>
                 <div className="flex flex-col gap-1.5">

@@ -7,18 +7,18 @@ import BottomNav from '../components/Bottomnav';
 export default function CheckInPage() {
   const navigate = useNavigate();
 
-  const [phase, setPhase] = useState('loading'); // loading | intro | reviewing | done | error
+  const [phase, setPhase] = useState('loading'); 
   const [checkIn, setCheckIn] = useState(null);
   const [sections, setSections] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [reviews, setReviews] = useState({}); // { sectionIndex: 'still_works' | 'needs_chat' }
+  const [reviews, setReviews] = useState({}); 
   const [errorMsg, setErrorMsg] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const token = localStorage.getItem('token');
   const pactId = localStorage.getItem('pactId');
 
-  // Start the check-in on mount
+ 
   useEffect(() => {
     const start = async () => {
       if (!pactId) {
@@ -34,7 +34,7 @@ export default function CheckInPage() {
         );
         setCheckIn(res.data.checkIn);
         setSections(res.data.sections || []);
-        // Pre-fill all as 'still_works'
+      
         const initial = {};
         (res.data.sections || []).forEach((s) => {
           initial[s.sectionIndex] = 'still_works';
@@ -43,11 +43,11 @@ export default function CheckInPage() {
         setPhase('intro');
       } catch (err) {
         const msg = err?.response?.data?.message || 'Failed to start check-in.';
-        // If already in progress, try to recover gracefully
+        
         if (err?.response?.data?.checkIn) {
           const existing = err.response.data.checkIn;
           setCheckIn(existing);
-          // We don't have sections here — fetch pact topics separately
+        
           setErrorMsg('A check-in is already in progress. Please complete it below.');
           setPhase('error');
         } else {
@@ -103,7 +103,6 @@ export default function CheckInPage() {
   const flaggedCount = Object.values(reviews).filter((s) => s === 'needs_chat').length;
   const isLast = currentIndex === sections.length - 1;
 
-  // ─── Loading ───────────────────────────────────────────────────────────────
   if (phase === 'loading') {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] gap-3">
@@ -113,7 +112,6 @@ export default function CheckInPage() {
     );
   }
 
-  // ─── Error ─────────────────────────────────────────────────────────────────
   if (phase === 'error') {
     return (
       <div className="flex-1 flex flex-col bg-[#FAF8F4]">
@@ -137,7 +135,6 @@ export default function CheckInPage() {
     );
   }
 
-  // ─── Intro ─────────────────────────────────────────────────────────────────
   if (phase === 'intro') {
     return (
       <div className="flex-1 flex flex-col bg-[#FAF8F4]">
@@ -186,13 +183,13 @@ export default function CheckInPage() {
     );
   }
 
-  // ─── Reviewing ─────────────────────────────────────────────────────────────
+ 
   if (phase === 'reviewing' && currentSection) {
     const currentStatus = reviews[currentSection.sectionIndex] || 'still_works';
 
     return (
       <div className="flex-1 flex flex-col bg-[#FAF8F4]">
-        {/* Header */}
+    
         <div className="px-5 pt-3.5 pb-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
           <div className="flex justify-between items-center mb-3">
             <div className="font-['Cormorant_Garamond'] text-[13px] italic text-[#D4899A]">patto</div>
@@ -200,7 +197,7 @@ export default function CheckInPage() {
               {currentIndex + 1} of {sections.length}
             </span>
           </div>
-          {/* Progress bar */}
+    
           <div className="w-full h-1 bg-[#F0E9E3] rounded-full overflow-hidden">
             <div
               className="h-full bg-[#6B2D3E] rounded-full transition-all duration-300"
@@ -210,7 +207,7 @@ export default function CheckInPage() {
         </div>
 
         <div className="flex-1 px-5 py-5 flex flex-col gap-4 overflow-y-auto">
-          {/* Section title */}
+      
           <div>
             <div className="text-[10.5px] font-medium tracking-[0.06em] text-[#B8999F] uppercase mb-1">
               §{currentSection.sectionIndex + 1}
@@ -220,7 +217,7 @@ export default function CheckInPage() {
             </div>
           </div>
 
-          {/* What you agreed */}
+        
           {currentSection.summary?.length > 0 && (
             <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] px-4 py-4">
               <div className="text-[10.5px] font-medium tracking-[0.06em] text-[#B8999F] uppercase mb-2.5">
@@ -237,7 +234,7 @@ export default function CheckInPage() {
             </div>
           )}
 
-          {/* Status choice */}
+         
           <div className="flex flex-col gap-2">
             <div className="text-[11px] tracking-[0.05em] uppercase text-[#B8999F] mb-1">
               Does this still work for both of you?
@@ -291,7 +288,7 @@ export default function CheckInPage() {
           </div>
         </div>
 
-        {/* Nav buttons */}
+       
         <div className="px-5 pb-4 flex gap-2 flex-shrink-0">
           {currentIndex > 0 && (
             <button
@@ -327,7 +324,6 @@ export default function CheckInPage() {
     );
   }
 
-  // ─── Done ──────────────────────────────────────────────────────────────────
   if (phase === 'done') {
     const flagged = checkIn?.flaggedSections || [];
 

@@ -57,7 +57,7 @@ export default function ResetPasswordPage() {
           Choose a new password for your account.
         </p>
 
-        {/* New Password */}
+       
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">New password</span>
           <div className="relative">
@@ -85,7 +85,7 @@ export default function ResetPasswordPage() {
           </div>
         </div>
 
-        {/* Confirm Password */}
+      
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Confirm password</span>
           <div className="relative">

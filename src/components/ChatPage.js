@@ -42,7 +42,6 @@ export default function ChatPage({ label, backRoute, topicId }) {
 
   const progress = questions.length === 0 ? 0 : step >= questions.length ? 100 : Math.round((step / questions.length) * 100);
 
-  // ── Fetch AI questions on mount ──────────────────────────────────────────
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoadingQuestions(true);
@@ -86,7 +85,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
         if (!res.ok) throw new Error('Failed to fetch questions');
 
         const data = await res.json();
-        // xAI responses API returns output array
+        
         const text = data.output
           ?.filter(b => b.type === 'message')
           ?.flatMap(b => b.content)
@@ -107,7 +106,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     fetchQuestions();
   }, [topicId]);
 
-  // ── Fetch next route ─────────────────────────────────────────────────────
+
   useEffect(() => {
     const fetchPactAndUser = async () => {
       const token = localStorage.getItem('token');
@@ -141,7 +140,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     fetchPactAndUser();
   }, [topicId, isEditing]);
 
-  // ── Save answers when all done ───────────────────────────────────────────
+
   useEffect(() => {
     if (questions.length === 0 || answers.length !== questions.length) return;
 
@@ -197,7 +196,7 @@ const choose = (optionIndex) => {
       setShowPaywall(true);
     }
   };
-  // ── Loading state ────────────────────────────────────────────────────────
+ 
   if (loadingQuestions) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] gap-3">
@@ -227,7 +226,7 @@ const choose = (optionIndex) => {
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">
       {showPaywall && <SubscriptionPopup onClose={() => setShowPaywall(false)} />}
 
-      {/* Header */}
+    
       <div className="px-5 pt-[10px] pb-[10px] bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <div className="flex items-center gap-3 w-full">
           <button
@@ -250,7 +249,7 @@ const choose = (optionIndex) => {
         </div>
       </div>
 
-      {/* Chat */}
+      
       <div className="flex-1 px-[18px] py-4 flex flex-col gap-3 overflow-y-auto">
         {questions.map((q, i) => {
           if (i > step) return null;

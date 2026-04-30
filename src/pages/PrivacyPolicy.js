@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-// ─── Shared Legal UI Components ───────────────────────────────────────────────
 
 export const InfoBox = ({ children }) => (
     <div className="rounded-xl border border-[#E8D5D8] bg-[#FDF6F7] divide-y divide-[#E8D5D8]">

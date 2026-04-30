@@ -1,4 +1,4 @@
-// src/pages/VerifyPage.jsx
+
 import { useNavigate } from 'react-router-dom';
 
 export default function VerifyPage() {

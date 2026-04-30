@@ -18,13 +18,13 @@
           });
           setData(res.data);
         } catch {
-          // fail silently — page shows with empty state
+        
         }
       };
       fetch();
     }, []);
 
-    // Filter out topics already added to the pact
+  
   
     const stats = [
       { value: String(data?.stats?.yearsActive ?? '—'), label: 'year active' },
@@ -39,7 +39,7 @@
     return (
       <div className="flex-1 flex flex-col bg-[#FAF8F4]">
 
-        {/* Header */}
+      
         <div className="px-5 pt-3.5 pb-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
           <div className="flex justify-between items-center">
             <div>
@@ -71,7 +71,7 @@
 
         <div className="flex-1 px-5 py-3.5 flex flex-col gap-2.5 overflow-y-auto">
 
-          {/* Check-in banner */}
+     
           {data?.checkInAvailable && (
             <div className="bg-[#F5E8EB] border border-[#D4899A] rounded-[14px] px-4 py-3.5">
               <div className="flex items-center gap-2 mb-1.5">
@@ -93,7 +93,7 @@
             </div>
           )}
 
-          {/* Pact sections */}
+          
           <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F] mt-1">Your pact</div>
           <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] overflow-hidden">
             {(data?.pactSections ?? []).length === 0 ? (
@@ -123,11 +123,10 @@
             )}
           </div>
 
-          {/* Add new topic */}
-        
+       
         </div>
 
-        {/* Bottom nav */}
+      
       <BottomNav/>
 
         <div className="h-[30px] flex justify-center items-center flex-shrink-0">

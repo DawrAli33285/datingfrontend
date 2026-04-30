@@ -47,7 +47,7 @@ export default function WaitingPage() {
 
     fetchStatus();
 
-    // Poll every 10 seconds to check if partner signed
+ 
     const interval = setInterval(fetchStatus, 10000);
     return () => clearInterval(interval);
   }, []);
@@ -103,7 +103,7 @@ export default function WaitingPage() {
             <div className="text-[13px] text-[#B8999F]">Loading...</div>
           ) : (
             <div className="flex flex-col gap-3">
-              {/* Partner 1 */}
+            
               <div className="flex items-center gap-2.5">
                 <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${sig1 ? 'bg-[#1D9E75]' : 'bg-[#6B2D3E]'}`}
                   style={!sig1 ? { animation: 'pulse2 2s ease infinite' } : {}}
@@ -118,7 +118,6 @@ export default function WaitingPage() {
                 </div>
               </div>
 
-              {/* Partner 2 */}
               <div className="flex items-center gap-2.5">
                 <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${sig2 ? 'bg-[#1D9E75]' : 'bg-[#6B2D3E]'}`}
                   style={!sig2 ? { animation: 'pulse2 2s ease infinite' } : {}}

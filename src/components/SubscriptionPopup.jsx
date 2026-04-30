@@ -40,7 +40,7 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
         });
         if (res.data?.isPremium) setAlreadyPremium(true);
       } catch {
-        // fail silently
+      
       } finally {
         setChecking(false);
       }

@@ -8,7 +8,7 @@ import { BASE_URL } from '../components/baseurl';
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const inviteToken = searchParams.get('token'); // ← read token from URL
+  const inviteToken = searchParams.get('token'); 
 
   const [showPassword, setShowPassword] = useState(false);
   const [termsChecked, setTermsChecked] = useState(true);
@@ -23,14 +23,12 @@ export default function SignUpPage() {
     setTimeout(() => setToast({ message: '', type: '' }), 4000);
   };
 
-  // ── Navigate after register — skip /name if firstName already set ──────────
   const navigateAfterRegister = (user) => {
     navigate('/signin');
   };
 
 
 
-  // ── Google sign-up ─────────────────────────────────────────────────────────
   const handleGoogleSignIn = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -69,7 +67,6 @@ export default function SignUpPage() {
     onError: () => showToast('Server error, please try again.'),
   });
 
-  // ── Email register ─────────────────────────────────────────────────────────
   const handleRegister = async () => {
     if (!email || !password) return showToast('Please fill in all fields.');
     if (!/\S+@\S+\.\S+/.test(email)) return showToast('Please enter a valid email address.');
@@ -81,7 +78,7 @@ export default function SignUpPage() {
       const res = await axios.post(`${BASE_URL}/register`, {
         email,
         password,
-        ...(inviteToken && { inviteToken }), // ← pass token if present
+        ...(inviteToken && { inviteToken }), 
       });
 
       showToast('Account created! Welcome aboard.', 'success');
@@ -107,7 +104,7 @@ export default function SignUpPage() {
         onClose={() => setToast({ message: '', type: '' })}
       />
 
-      {/* Header */}
+    
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <button
           onClick={() => navigate('/welcome')}
@@ -123,10 +120,10 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Body */}
+    
       <div className="px-5 py-5 flex flex-col gap-3.5 overflow-y-auto">
 
-        {/* Show invite context if token present */}
+      
         {inviteToken && (
           <div className="bg-[#FBF2F4] border border-[#D4899A] rounded-[14px] px-4 py-3">
             <p className="text-[12.5px] text-[#7A5560] leading-[1.6]">
@@ -135,7 +132,7 @@ export default function SignUpPage() {
           </div>
         )}
 
-        {/* Google button */}
+       
         <button
           onClick={() => {
             if (!termsChecked) return showToast('Please agree to the Terms of Service and Privacy Policy.');
@@ -159,14 +156,14 @@ export default function SignUpPage() {
           )}
         </button>
 
-        {/* Divider */}
+     
         <div className="flex items-center gap-2.5">
           <div className="flex-1 h-px bg-[rgba(107,45,62,0.13)]"/>
           <span className="text-[12px] text-[#B8999F]">or sign up with email</span>
           <div className="flex-1 h-px bg-[rgba(107,45,62,0.13)]"/>
         </div>
 
-        {/* Email */}
+      
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Email address</span>
           <input
@@ -178,7 +175,7 @@ export default function SignUpPage() {
           />
         </div>
 
-        {/* Password */}
+    
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Password</span>
           <div className="relative">
@@ -209,7 +206,7 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Terms */}
+        
         <div className="flex items-start gap-2.5 py-0.5">
           <button
             onClick={() => setTermsChecked(!termsChecked)}
@@ -237,7 +234,6 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Submit */}
         <button
           onClick={handleRegister}
           disabled={loading}
@@ -257,7 +253,7 @@ export default function SignUpPage() {
               </span>
             </span>
           </div>
-        {/* Privacy note */}
+      
         <div className="bg-[#F0E9E3] rounded-xl px-3 py-2.5">
           <p className="text-[11.5px] text-[#7A5560] leading-[1.6]">
             <span className="font-medium text-[#2A1A1F]">Your data is yours.</span> We use

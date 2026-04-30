@@ -1,9 +1,8 @@
-// src/pages/SignUpPage.jsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-// ─── Toast Component ──────────────────────────────────────────────────────────
 export default function Toast({ message, type, onClose }) {
   if (!message) return null;
 

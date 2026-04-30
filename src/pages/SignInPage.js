@@ -1,4 +1,4 @@
-// src/pages/SignInPage.jsx
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
@@ -76,8 +76,6 @@ export default function SignInPage() {
   });
 
 
-
-  // ── Email login ────────────────────────────────────────────────────────────
   const handleLogin = async () => {
     if (!email || !password) return showToast('Please fill in all fields.');
     if (!/\S+@\S+\.\S+/.test(email)) return showToast('Please enter a valid email address.');
@@ -140,7 +138,7 @@ export default function SignInPage() {
 
         <div className="flex flex-col gap-3">
 
-          {/* Google */}
+        
           <button onClick={() => handleGoogleSignIn()}
             disabled={googleLoading}
             className="flex items-center justify-center gap-2.5 w-full h-12 border border-[rgba(107,45,62,0.13)] rounded-xl bg-white px-4 text-[14px] text-[#2A1A1F] hover:bg-[#F0E9E3] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
@@ -166,7 +164,7 @@ export default function SignInPage() {
             <div className="flex-1 h-px bg-[rgba(107,45,62,0.13)]"/>
           </div>
 
-          {/* Email */}
+       
           <div className="flex flex-col gap-1.5">
             <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Email address</span>
             <input
@@ -178,7 +176,7 @@ export default function SignInPage() {
             />
           </div>
 
-          {/* Password */}
+         
           <div className="flex flex-col gap-1.5">
             <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Password</span>
             <div className="relative">
@@ -218,7 +216,7 @@ export default function SignInPage() {
             </span>
           </div>
 
-          {/* Submit */}
+         
           <button
             onClick={handleLogin}
             disabled={loading}

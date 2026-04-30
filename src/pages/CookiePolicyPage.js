@@ -131,7 +131,6 @@ const Cookies = () => (
     </div>
   );
    
-  // ─── Shared sub-components ────────────────────────────────────────────────────
   const Section = ({ n, title, children }) => (
     <div>
       <div className="flex items-baseline gap-2 mb-3">
@@ -200,7 +199,6 @@ const Cookies = () => (
     </div>
   );
    
-  // ─── Main page ────────────────────────────────────────────────────────────────
    function LegalPage() {
     const navigate = useNavigate ? useNavigate() : null;
     const [active, setActive] = useState('tos');
@@ -213,7 +211,7 @@ const Cookies = () => (
    
     return (
       <div className="flex-1 flex flex-col bg-[#FAF8F4]">
-        {/* Header */}
+     
         <div className="px-5 py-[10px] bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
           <div className="flex items-center gap-3 mb-2">
             {navigate && (
@@ -234,7 +232,7 @@ const Cookies = () => (
             </div>
           </div>
    
-          {/* Tab bar */}
+        
           <div className="flex gap-1.5 mt-1">
             {tabs.map(({ id, label }) => (
               <button
@@ -252,14 +250,14 @@ const Cookies = () => (
           </div>
         </div>
    
-        {/* Content */}
+       
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {active === 'tos' && <TOS />}
           {active === 'privacy' && <Privacy />}
           {active === 'cookies' && <Cookies />}
         </div>
    
-        {/* Home indicator */}
+       
         <div className="h-[30px] flex justify-center items-center flex-shrink-0">
           <div className="w-[126px] h-1 bg-black opacity-[0.07] rounded-sm" />
         </div>

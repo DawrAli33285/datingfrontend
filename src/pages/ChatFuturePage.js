@@ -1,4 +1,4 @@
-// ChatFuturePage.jsx
+
 import ChatPage from '../components/ChatPage';
 
 const questions = [

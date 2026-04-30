@@ -1,4 +1,4 @@
-// src/index.js
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      // ── Public routes (everyone) ──────────────────────────
+      
       { path: '/', element: <SplashPage /> },
       { path: '/welcome', element: <WelcomePage /> },
       { path: '/signup', element: <SignUpPage /> },
@@ -77,7 +77,6 @@ const router = createBrowserRouter([
       {path:'/cookie-policy',element:<Cookies/>},
      
 
-      // ── Owner-only routes (blocked for invited partner) ───
       {
         path: '/name',
         element: <PartnerGuard><NamePage /></PartnerGuard>,
@@ -147,7 +146,6 @@ const router = createBrowserRouter([
         element: <PartnerGuard><NotificationsPage /></PartnerGuard>,
       },
 
-      // ── Partner-only routes (blocked for owner) ───────────
       {
         path: '/partner-review',
         element: <OwnerGuard><PartnerReviewPage /></OwnerGuard>,

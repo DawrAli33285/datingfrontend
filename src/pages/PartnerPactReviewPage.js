@@ -68,7 +68,7 @@ export default function PartnerPactReviewPage() {
 
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">
-      {/* Header */}
+    
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <button
           onClick={() => navigate(-1)}
@@ -85,7 +85,7 @@ export default function PartnerPactReviewPage() {
       </div>
 
       <div className="px-5 py-3.5 flex flex-col gap-2.5 overflow-y-auto">
-        {/* Pact header card */}
+      
         <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[16px] p-5 text-center">
           <div className="font-['Cormorant_Garamond'] text-[13px] italic text-[#D4899A] tracking-[0.06em] mb-2">
             patto
@@ -118,7 +118,7 @@ export default function PartnerPactReviewPage() {
               </div>
 
               <div className="px-3.5 py-3 flex flex-col gap-3">
-                {/* Q&A */}
+              
                 {(topic.answers ?? []).map((qa, i) => (
                   <div key={i} className="flex flex-col gap-1">
                     <p className="text-[11px] text-[#B8999F] leading-[1.5]">{qa.question}</p>
@@ -129,8 +129,7 @@ export default function PartnerPactReviewPage() {
                   </div>
                 ))}
 
-                {/* Partner review badge */}
-              {/* Partner review badge */}
+               
               {badge && (
                   <div className="flex flex-col gap-1.5">
                     <div className={`mt-1 rounded-[9px] px-3 py-2 text-[11.5px] font-medium ${badge.bg} ${badge.text}`}>

@@ -10,7 +10,7 @@ export default function AgreePage() {
   const [createdAt, setCreatedAt] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [mySlot, setMySlot] = useState(null); // 'partner1' or 'partner2'
+  const [mySlot, setMySlot] = useState(null); 
 
   const bothAgreed = myAgreed && partnerAgreed;
 

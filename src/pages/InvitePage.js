@@ -55,7 +55,7 @@ export default function InvitePage() {
   };
 
 
-  // Get sender name from localStorage for email preview
+
   const senderName = JSON.parse(localStorage.getItem('user') || '{}')?.firstName || 'Your partner';
   const previewPartnerName = partnerName || 'Jordan';
   const previewPartnerEmail = partnerEmail || 'jordan@email.com';
@@ -111,7 +111,7 @@ export default function InvitePage() {
         onClose={() => setToast({ message: '', type: '' })}
       />
 
-      {/* Header */}
+     
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <button
           onClick={() => navigate(-1)}
@@ -138,7 +138,7 @@ export default function InvitePage() {
           </p>
         </div>
 
-        {/* Partner name */}
+  
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Partner's name</span>
           <input
@@ -150,7 +150,7 @@ export default function InvitePage() {
           />
         </div>
 
-        {/* Tabs */}
+    
         <div className="flex flex-col gap-2">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">How to invite them</span>
           <div className="flex bg-[#F0E9E3] rounded-xl p-[3px] gap-0.5">
@@ -170,7 +170,7 @@ export default function InvitePage() {
           </div>
         </div>
 
-        {/* Email tab */}
+       
         {activeTab === 0 && (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
@@ -186,7 +186,7 @@ export default function InvitePage() {
               />
             </div>
 
-            {/* Email preview */}
+          
             <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-xl overflow-hidden">
               <div className="px-3.5 py-2.5 border-b border-[rgba(107,45,62,0.13)] flex justify-between items-center">
                 <span className="text-[11px] text-[#B8999F]">Email preview</span>
@@ -213,7 +213,7 @@ export default function InvitePage() {
           </div>
         )}
 
-        {/* Link tab */}
+      
         {activeTab === 1 && (
           <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-xl p-3.5 flex flex-col gap-2.5">
             {!inviteLink ? (
@@ -240,7 +240,7 @@ export default function InvitePage() {
           </div>
         )}
 
-        {/* CTA */}
+     
         <button
           onClick={activeTab === 0 ? handleSendInvitation : () => navigate('/topics')}
           disabled={loading}
@@ -249,12 +249,20 @@ export default function InvitePage() {
           {loading ? 'Sending...' : activeTab === 0 ? 'Send invitation & continue →' : 'Continue →'}
         </button>
         {hasPartner && (
+ <>
   <button
     onClick={() => navigate('/topics')}
     className="w-full h-[52px] rounded-[15px] border border-[rgba(107,45,62,0.13)] text-[#7A5560] text-[15px] font-medium hover:bg-[#F0E9E3] transition-colors"
   >
     Skip — I already have a partner →
   </button>
+  <button
+    onClick={() => navigate('/dashboard')}
+    className="w-full h-[52px] rounded-[15px] border border-[rgba(107,45,62,0.13)] text-[#7A5560] text-[15px] font-medium hover:bg-[#F0E9E3] transition-colors"
+  >
+    Go to Dashboard →
+  </button>
+ </>
 )}
 
        

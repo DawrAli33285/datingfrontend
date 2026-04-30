@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-// ─── Helper Components ────────────────────────────────────────────────────────
 
 const InfoBox = ({ children }) => (
   <div className="rounded-xl border border-[#E8D5D8] bg-[#FDF6F7] divide-y divide-[#E8D5D8]">
@@ -65,7 +64,6 @@ const tabs = [
 ];
 
  
-// ─── Terms & Conditions ───────────────────────────────────────────────────────
 const TOS = () => (
   <div className="flex flex-col gap-6">
     <InfoBox>

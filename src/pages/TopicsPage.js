@@ -69,7 +69,7 @@ export default function TopicsPage() {
     setError(null);
   
     try {
-      // 1. Save topics
+      
       const res = await fetch(`${BASE_URL}/pact/topics`, {
         method: 'POST',
         headers: {

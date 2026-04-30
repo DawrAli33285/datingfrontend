@@ -45,7 +45,7 @@ export default function TogetherPage() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Keep localStorage in sync
+   
       const stored = JSON.parse(localStorage.getItem('user') || '{}');
       localStorage.setItem('user', JSON.stringify({ ...stored, partnerMode: chosen.value }));
 
@@ -66,7 +66,7 @@ export default function TogetherPage() {
         onClose={() => setToast({ message: '', type: '' })}
       />
 
-      {/* Header */}
+     
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <button
           onClick={() => navigate('/name')}
@@ -82,7 +82,7 @@ export default function TogetherPage() {
         </div>
       </div>
 
-      {/* Body */}
+     
       <div className="px-5 py-5 flex flex-col gap-4">
 
         <p className="text-[13px] text-[#7A5560] leading-[1.65]">

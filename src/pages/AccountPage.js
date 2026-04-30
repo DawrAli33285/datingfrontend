@@ -32,7 +32,6 @@ const RowLink = ({ icon, label, danger, onClick, right }) => (
   </button>
 );
 
-// ─── Edit Profile Popup ───────────────────────────────────────────────────────
 function EditProfilePopup({ user, onClose, onSaved }) {
   const [firstName, setFirstName] = useState(user.firstName || '');
   const [email, setEmail] = useState(user.email || '');
@@ -54,7 +53,7 @@ function EditProfilePopup({ user, onClose, onSaved }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Sync localStorage
+      
       const stored = JSON.parse(localStorage.getItem('user') || '{}');
       localStorage.setItem('user', JSON.stringify({ ...stored, firstName: res.data.user.firstName }));
 
@@ -68,22 +67,22 @@ function EditProfilePopup({ user, onClose, onSaved }) {
   };
 
   return (
-    // Backdrop
+ 
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4"
       onClick={onClose}
     >
-      {/* Sheet */}
+    
       <div
         className="w-full max-w-md bg-white rounded-[24px] px-5 pt-5 pb-8 flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Handle */}
+     
         <div className="w-10 h-1 bg-[rgba(107,45,62,0.13)] rounded-full mx-auto -mt-1 mb-1" />
 
         <div className="font-['Cormorant_Garamond'] text-[20px] text-[#2A1A1F]">Edit profile</div>
 
-        {/* First name */}
+       
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">First name</span>
           <input
@@ -94,7 +93,7 @@ function EditProfilePopup({ user, onClose, onSaved }) {
           />
         </div>
 
-        {/* Email */}
+       
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Email address</span>
           <input
@@ -105,7 +104,7 @@ function EditProfilePopup({ user, onClose, onSaved }) {
           />
         </div>
 
-        {/* Pronoun */}
+     
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Pronouns</span>
           <div className="flex flex-wrap gap-2">
@@ -147,7 +146,6 @@ function EditProfilePopup({ user, onClose, onSaved }) {
   );
 }
 
-// ─── AccountPage ─────────────────────────────────────────a─────────────────────
 export default function AccountPage() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
@@ -172,7 +170,7 @@ export default function AccountPage() {
         });
         setUserData(res.data.user);
   
-        // Fetch pact data for PDF
+      
         const pactRes = await axios.get(`${BASE_URL}/pact/review/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -199,7 +197,7 @@ export default function AccountPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch {
-      // fail silently — clear local state regardless
+      
     } finally {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -296,7 +294,6 @@ export default function AccountPage() {
       )}
       
 
-      {/* Header */}
       <div className="px-5 pt-4 pb-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-[#F5E8EB] flex items-center justify-center font-['Cormorant_Garamond'] text-[20px] italic text-[#6B2D3E] flex-shrink-0">
@@ -318,7 +315,7 @@ export default function AccountPage() {
 
       <div className="flex-1 px-5 py-3.5 flex flex-col gap-2 overflow-y-auto">
 
-        {/* Pact */}
+    
         <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F]">Your pact</div>
         <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] overflow-hidden divide-y divide-[rgba(107,45,62,0.13)]">
           <RowLink
@@ -333,7 +330,7 @@ export default function AccountPage() {
 />
         </div>
 
-      {/* Partner */}
+   
 <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F] mt-1">Partner</div>
 <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] px-[14px] py-3 flex items-center gap-[10px]">
   <div className="w-9 h-9 rounded-full bg-[#F0E9E3] flex items-center justify-center font-['Cormorant_Garamond'] text-[16px] italic text-[#7A5560] flex-shrink-0">
@@ -353,9 +350,7 @@ export default function AccountPage() {
   </div>
 </div>
 
-        {/* Plan */}
       
-       {/* Plan */}
        <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F] mt-1">Plan</div>
         <div
           className={`bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] px-[14px] py-3 flex justify-between items-center ${!userData?.isPremium ? 'cursor-pointer hover:bg-[#FAF8F4] transition-colors' : ''}`}
@@ -376,7 +371,7 @@ export default function AccountPage() {
           </span>
         </div>
 
-        {/* Preferences */}
+
         <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F] mt-1">Preferences</div>
         <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] overflow-hidden divide-y divide-[rgba(107,45,62,0.13)]">
           <RowLink
@@ -387,7 +382,7 @@ export default function AccountPage() {
          
         </div>
 
-        {/* Sign out */}
+      
         <button
           onClick={handleSignOut}
           className="w-full h-[44px] rounded-[13px] bg-[#F0E9E3] text-[#7A5560] text-[14px] font-medium hover:bg-[#E6DCD5] transition-colors mt-1"
@@ -400,7 +395,7 @@ export default function AccountPage() {
         </div>
       </div>
 
-      {/* Bottom nav */}
+     
      <BottomNav/>
 
       <div className="h-[30px] flex justify-center items-center flex-shrink-0">

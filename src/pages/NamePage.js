@@ -1,4 +1,4 @@
-// src/pages/NamePage.jsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -38,7 +38,7 @@ export default function NamePage() {
         }
       );
 
-      // Update stored user with new firstName
+      
       const stored = JSON.parse(localStorage.getItem('user') || '{}');
       localStorage.setItem('user', JSON.stringify({ ...stored, firstName: res.data.user.firstName }));
 
@@ -59,7 +59,7 @@ export default function NamePage() {
         onClose={() => setToast({ message: '', type: '' })}
       />
 
-      {/* Header */}
+   
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <button
           onClick={() => navigate(-1)}
@@ -75,14 +75,14 @@ export default function NamePage() {
         </div>
       </div>
 
-      {/* Body */}
+      
       <div className="px-5 py-6 flex flex-col gap-5">
 
         <p className="text-[13px] text-[#7A5560] leading-[1.65]">
           Patto addresses both of you by name — it makes the conversations feel more personal.
         </p>
 
-        {/* First name input */}
+     
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] text-[#B8999F] tracking-[0.04em]">Your first name</span>
           <input
@@ -102,7 +102,7 @@ export default function NamePage() {
           </p>
         </div>
 
-        {/* Gender selector */}
+        
         <div>
           <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F] mb-2.5">
             How do you identify?
