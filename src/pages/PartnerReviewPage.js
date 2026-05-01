@@ -35,6 +35,8 @@ export default function PartnerReviewPage() {
         const res = await fetch(`${BASE_URL}/pact/review/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("RES")
+        console.log(res.data)
         if (res.status === 404) {
           setNoPactYet(true);
           setLoading(false);

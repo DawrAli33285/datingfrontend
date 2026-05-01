@@ -21,7 +21,7 @@ export default function CheckInPage() {
   useEffect(() => {
     const start = async () => {
 
-      const pactMeRes = await fetch(`${BASE_URL}/pact/me`, {
+      const pactMeRes = await fetch(`${BASE_URL}/getpact/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   

@@ -18,8 +18,7 @@ export default function ReviewPactPage() {
         const res = await axios.get(`${BASE_URL}/pact/review/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("FETCH PACT")
-        console.log(res.data)
+      
         setPact(res.data);
       } catch {
      
@@ -100,7 +99,7 @@ export default function ReviewPactPage() {
             patto
           </div>
           <div className="font-['Cormorant_Garamond'] text-[26px] font-normal text-[#2A1A1F] mb-1">
-  {loading ? '...' : (pact?.names || 'Your pact')}
+  {loading ? '...' : (pact?.partnerNames?.partner1+'& '+ pact?.partnerNames?.partner2 || 'Your pact')}
 </div>
           <div className="text-[12px] text-[#B8999F]">
             {!loading && `${pact?.status === 'signed' ? 'Signed' : 'Draft'} · ${formatDate(pact?.createdAt)}`}

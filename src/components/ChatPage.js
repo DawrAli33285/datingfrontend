@@ -38,7 +38,7 @@ export default function ChatPage({ label, backRoute, topicId }) {
   const [saveError, setSaveError] = useState(null);
   const [nextRoute, setNextRoute] = useState('/review');
   const paywallShown = useRef(false);
-  const PAYWALL_THRESHOLD = 20;
+  const PAYWALL_THRESHOLD = 8;
 
   const progress = questions.length === 0 ? 0 : step >= questions.length ? 100 : Math.round((step / questions.length) * 100);
 
@@ -104,6 +104,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     };
 
     fetchQuestions();
+    localStorage.removeItem('totalAnswers');
   }, [topicId]);
 
 
@@ -148,7 +149,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
       const token = localStorage.getItem('token');
       let pactId;
       try {
-        const pactMeRes = await fetch(`${BASE_URL}/pact/me`, {
+        const pactMeRes = await fetch(`${BASE_URL}/getpact/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!pactMeRes.ok) { setSaveError('No pact found. Please restart.'); return; }
@@ -198,10 +199,9 @@ const choose = (optionIndex) => {
     setAnswers(newAnswers);
     setStep(step + 1);
 
-    const totalAnswered = parseInt(localStorage.getItem('totalAnswers') || '0') + 1;
-    localStorage.setItem('totalAnswers', totalAnswered);
+    const newTotal = answers.length + 1;
 
-    if (!isPremium && totalAnswered === PAYWALL_THRESHOLD && !paywallShown.current) {
+    if (!isPremium && newTotal === PAYWALL_THRESHOLD && !paywallShown.current) {
       paywallShown.current = true;
       setShowPaywall(true);
     }

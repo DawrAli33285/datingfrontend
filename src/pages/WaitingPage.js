@@ -15,7 +15,7 @@ export default function WaitingPage() {
      
 
       try {
-        const pactMeRes = await fetch(`${BASE_URL}/pact/me`, {
+        const pactMeRes = await fetch(`${BASE_URL}/getpact/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!pactMeRes.ok) {
@@ -50,6 +50,7 @@ export default function WaitingPage() {
           setNames({ partner1: p1 || 'Partner 1', partner2: p2 || 'Partner 2' });
         }
       } catch (err) {
+        console.log(err.message)
         console.log(err);
       } finally {
         setLoading(false);
