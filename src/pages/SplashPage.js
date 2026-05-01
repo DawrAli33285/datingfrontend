@@ -330,19 +330,7 @@ const Pricing = ({ setPage }) => {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 800, margin: "56px auto 0" }}>
        
-        <div style={{ background: t.w, border: `.5px solid ${t.creamDD}`, borderRadius: 24, padding: 36 }}>
-          <div style={{ ...sans, fontSize: 12, fontWeight: 500, letterSpacing: ".06em", textTransform: "uppercase", color: t.rose, marginBottom: 24 }}>Free</div>
-          <div style={{ ...serif, fontSize: 48, color: t.tx, lineHeight: 1, marginBottom: 4 }}>$0</div>
-          <div style={{ ...sans, fontSize: 14, color: t.tl, marginBottom: 20 }}>forever</div>
-          <div style={{ height: .5, background: t.creamDD, margin: "20px 0" }} />
-          {freeFeatures.map(f => (
-            <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13.5, color: t.tm, marginBottom: 10 }}>
-              <div style={{ width: 18, height: 18, borderRadius: "50%", background: t.tealL, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></div>
-              {f}
-            </div>
-          ))}
-          <button onClick={() => window.location.href='/signup'} style={{ ...sans, display: "block", width: "100%", height: 50, marginTop: 28, borderRadius: 14, fontSize: 14, fontWeight: 500, cursor: "pointer", border: "none", background: t.creamD, color: t.tx, transition: "all .18s" }}>Get started free</button>
-        </div>
+      
        
         <div style={{ background: t.rose, border: `.5px solid ${t.rose}`, borderRadius: 24, padding: 36 }}>
           <div style={{ ...sans, fontSize: 12, fontWeight: 500, letterSpacing: ".06em", textTransform: "uppercase", color: t.roseM, marginBottom: 24 }}>Couple Plan</div>
@@ -385,8 +373,10 @@ const CtaBand = ({ setPage }) => (
 const Footer = () => (
   <>
     <footer style={{ padding: "48px 48px 32px", background: t.roseD, display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48 }}>
-      <div>
-        <span style={{ ...serif, fontStyle: "italic", fontSize: 32, color: t.cream, display: "block", marginBottom: 12 }}><PattoIcon/></span>
+      <div className="flex flex-row">
+        <span style={{ ...serif, fontStyle: "italic", fontSize: 32, color: t.cream, display: "block", marginBottom: 12 }}><PattoIcon/>
+        <p style={{ ...sans, fontSize: 12, color: "rgba(250,247,242,.3)" }}>Contact us: hello@patto.pro</p>
+        </span>
         <p style={{ ...sans, fontSize: 13, color: "rgba(250,247,242,.45)", lineHeight: 1.7, maxWidth: 280 }}>A shared promise between two people who want to be honest with each other — today and in the future.</p>
       </div>
       {[
@@ -403,6 +393,8 @@ const Footer = () => (
     </footer>
     <div style={{ padding: "20px 48px", background: t.roseD, borderTop: ".5px solid rgba(255,255,255,.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <p style={{ ...sans, fontSize: 12, color: "rgba(250,247,242,.3)" }}>© 2026 Traclin Pte Ltd · UEN 202113251D · Singapore</p>
+
+      
       <div style={{ display: "flex", gap: 20 }}>
         {["Terms", "Privacy", "Cookies"].map(l => <a key={l} href="#" className="footer-link" style={{ ...sans, fontSize: 12, color: "rgba(250,247,242,.3)", textDecoration: "none" }}>{l}</a>)}
       </div>
