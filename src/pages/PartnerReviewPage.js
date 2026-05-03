@@ -110,20 +110,20 @@ export default function PartnerReviewPage() {
   console.log(topics.map(t => ({ id: t.id, type: typeof t.id })));
 
   if (loading) return (
-    <div className="flex-1 flex items-center justify-center bg-[#FAF8F4]">
+    <div className="flex-1 min-h-screen flex items-center justify-center bg-[#FAF8F4]">
       <p className="text-[#B8999F] text-sm">Loading pact…</p>
     </div>
   );
 
   if (error) return (
-    <div className="flex-1 flex items-center justify-center bg-[#FAF8F4]">
+    <div className="flex-1 min-h-screen flex items-center justify-center bg-[#FAF8F4]">
       <p className="text-red-400 text-sm">{error}</p>
     </div>
   );
 
 
   if (noPactYet) return (
-    <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] px-8 gap-4">
+    <div className="flex-1 min-h-screen flex flex-col items-center justify-center bg-[#FAF8F4] px-8 gap-4">
       <div className="w-12 h-12 rounded-full bg-[#F0E9F1] flex items-center justify-center text-2xl">
         ✦
       </div>

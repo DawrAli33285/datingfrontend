@@ -35,7 +35,7 @@ export default function PartnerJoinPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#FAF8F4]">
+      <div className="flex-1 min-h-screen flex items-center justify-center bg-[#FAF8F4]">
         <p className="text-[13px] text-[#B8999F]">Loading invitation...</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function PartnerJoinPage() {
 
   if (invalid) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] px-7 text-center">
+      <div className="flex-1 min-h-screen flex flex-col items-center justify-center bg-[#FAF8F4] px-7 text-center">
         <div className="font-['Cormorant_Garamond'] text-[15px] italic text-[#D4899A] mb-4">patto</div>
         <h1 className="font-['Cormorant_Garamond'] text-[26px] text-[#2A1A1F] mb-3">This link has expired</h1>
         <p className="text-[13px] text-[#7A5560] leading-[1.7]">

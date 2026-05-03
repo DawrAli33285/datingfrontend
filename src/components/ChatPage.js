@@ -206,7 +206,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
 
   if (loadingQuestions) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] gap-3">
+      <div className="flex-1 flex flex-col bg-[#FAF8F4] rounded-[35px] overflow-hidden min-h-screen md:min-h-0 md:h-full md:min-w-[600px] md:max-w-[800px] md:mx-auto md:my-6 justify-center items-center md:min-h-[85vh]">
         <div className="w-7 h-7 rounded-full bg-[#6B2D3E] flex items-center justify-center font-['Cormorant_Garamond'] text-[13px] italic text-[#FAF8F4] animate-pulse">
           p
         </div>
@@ -217,7 +217,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
 
   if (questionError) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] gap-3 px-8 text-center">
+      <div className="flex-1 justify-center items-center flex flex-col bg-[#FAF8F4] rounded-[35px] overflow-hidden min-h-screen md:min-h-0 md:h-full md:min-w-[600px] md:max-w-[800px] md:mx-auto md:my-6 md:min-h-[85vh]">
         <p className="text-[13px] text-[#B8999F]">{questionError}</p>
         <button
           onClick={() => window.location.reload()}

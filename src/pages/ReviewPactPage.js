@@ -10,6 +10,10 @@ export default function ReviewPactPage() {
 
 
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+  const currentPartner = pact?.partners?.find(p => p._id === pact?.currentUserId);
+  const canEdit = !(pact?.status === 'signed' && currentPartner && !currentPartner.isPremium);
+
   
   useEffect(() => {
     const fetchPact = async (retries = 3) => {
@@ -143,7 +147,7 @@ export default function ReviewPactPage() {
             {!loading && `${pact?.status === 'signed' ? 'Signed' : 'Draft'} · ${formatDate(pact?.createdAt)}`}
           </div>
           <div className="h-px bg-[rgba(107,45,62,0.13)] my-3.5"/>
-          <p className="font-['Cormorant_Garamond'] text-[14px] text-[#7A5560] leading-[1.7] italic">
+          <p className="font-['Cormorant_Garamond'] text-[25px] text-[#7A5560] leading-[1.7] italic">
             This pact is not a legal contract. It is a voluntary, living agreement between two people
             who want to be good to each other — today and in the future.
           </p>
@@ -165,7 +169,9 @@ export default function ReviewPactPage() {
   <div className="text-[10.5px] font-medium tracking-[0.04em] text-[#7A5560] uppercase">
     §{idx + 1} · {topic.title}{topic.subtitle ? ` · ${topic.subtitle}` : ''}
   </div>
-  <button
+  
+  {canEdit && <button
+  
   onClick={() => {
     const titleToRoute = {
       'Money & finances': '/chat/money',
@@ -184,7 +190,7 @@ export default function ReviewPactPage() {
       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
     </svg>
-  </button>
+  </button>}
 </div>
 
     <div className="px-3.5 py-3 flex flex-col gap-3">

@@ -4,13 +4,18 @@
 
 @media (min-width: 1024px) {
     html {
-      font-size: 112.5%;
+      font-size: 125%;
     }
   }
   
   @media (min-width: 1280px) {
     html {
-      font-size: 118.75%;
+      font-size: 147.5%;
     }
   }
   
+  @media (min-width: 1536px) {
+    html {
+      font-size: 180%;
+    }
+  }

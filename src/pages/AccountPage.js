@@ -486,6 +486,16 @@ export default function AccountPage() {
         </div>
       </div>
 
+      {showSubscriptionPopup && (
+        <SubscriptionPopup
+          onClose={() => setShowSubscriptionPopup(false)}
+          onSuccess={() => {
+            setUserData(prev => ({ ...prev, isPremium: true }));
+            setShowSubscriptionPopup(false);
+          }}
+        />
+      )}
+      
      
      <BottomNav/>
 

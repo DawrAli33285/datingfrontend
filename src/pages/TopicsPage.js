@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../components/baseurl';
-
+import SubscriptionPopup from '../components/SubscriptionPopup'; 
 const initialTopics = [
   { id: 'fi', name: 'Fidelity', desc: 'Exclusivity, limits', icon: 'M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z', sel: true },
   { id: 'ho', name: 'Home', desc: 'Living, space, guests', icon: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z', sel: true },
@@ -26,6 +26,9 @@ export default function TopicsPage() {
   const [loading, setLoading] = useState(false);
   
   const [error, setError] = useState(null);
+  const [isLocked, setIsLocked] = useState(false);
+  const [showPremium, setShowPremium] = useState(false);
+
 
 
  useEffect(() => {
@@ -36,10 +39,17 @@ export default function TopicsPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
+        console.log("DATA")
+        console.log(data)
         if (res.ok && data.selectedTopics?.length > 0) {
           setTopics(prev =>
             prev.map(t => ({ ...t, sel: data.selectedTopics.includes(t.id) }))
           );
+        }
+        if (res.ok) {
+          const currentPartner = data.partners?.find(p => p._id === data.currentUserId);
+          const locked = data.status === 'signed' && currentPartner && !currentPartner.isPremium;
+          setIsLocked(locked);
         }
       } catch (err) {
         console.log('Could not load saved topics', err);
@@ -96,7 +106,7 @@ export default function TopicsPage() {
 
 
   return (
-    <div className="flex-1 flex flex-col bg-[#FAF8F4]">
+    <div style={{borderRadius:'30px'}} className="flex-1 flex flex-col bg-[#FAF8F4]">
 
       <div className="px-5 py-[10px] flex items-center gap-3 bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <button
@@ -144,24 +154,45 @@ export default function TopicsPage() {
       </div>
 
       <div className="px-5 pt-3.5 pb-2">
-      {error && (
-  <div className="text-[12px] text-red-500 text-center mb-2">{error}</div>
-)}
-<button
-  onClick={handleStart}
-  disabled={loading}
-  className="w-full h-[52px] rounded-[15px] bg-[#6B2D3E] text-[#FAF8F4] text-[15px] font-medium hover:bg-[#5A2535] transition-colors disabled:opacity-60"
->
-  {loading ? 'Saving...' : `Start with ${selectedCount} topic${selectedCount !== 1 ? 's' : ''}`}
-</button>
+        {error && (
+          <div className="text-[12px] text-red-500 text-center mb-2">{error}</div>
+        )}
+        {isLocked ? (
+          <div className="w-full rounded-[15px] bg-[#FBF2F4] border border-[#D4899A] px-4 py-4 text-center">
+            <p className="font-['Cormorant_Garamond'] text-[17px] text-[#6B2D3E] mb-1">Pact is signed</p>
+            <p className="text-[12px] text-[#7A5560] leading-[1.6]">Upgrade to Premium to edit your pact after signing.</p>
+            <button
+          onClick={() => setShowPremium(true)}
+              className="mt-3 px-5 py-2 rounded-[10px] bg-[#6B2D3E] text-[#FAF8F4] text-[13px] font-medium hover:bg-[#5A2535] transition-colors"
+            >
+              Upgrade to Premium
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleStart}
+            disabled={loading}
+            className="w-full h-[52px] rounded-[15px] bg-[#6B2D3E] text-[#FAF8F4] text-[15px] font-medium hover:bg-[#5A2535] transition-colors disabled:opacity-60"
+          >
+            {loading ? 'Saving...' : `Start with ${selectedCount} topic${selectedCount !== 1 ? 's' : ''}`}
+          </button>
+        )}
         <div className="text-center mt-2.5 text-[12px] text-[#B8999F]">
           You'll cover one topic at a time, guided by Patto
         </div>
       </div>
-
       <div className="h-[30px] flex justify-center items-center">
         <div className="w-[126px] h-1 bg-black opacity-[0.07] rounded-sm" />
       </div>
+      {showPremium && (
+        <SubscriptionPopup
+          onClose={() => setShowPremium(false)}
+          onSuccess={() => {
+            setIsLocked(false);
+            setShowPremium(false);
+          }}
+        />
+      )}
     </div>
   );
 }

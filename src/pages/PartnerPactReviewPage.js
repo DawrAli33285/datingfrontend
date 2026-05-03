@@ -97,7 +97,7 @@ export default function PartnerPactReviewPage() {
             {`${status === 'signed' ? 'Signed' : 'Draft'} · ${formatDate(createdAt)}`}
           </div>
           <div className="h-px bg-[rgba(107,45,62,0.13)] my-3.5"/>
-          <p className="font-['Cormorant_Garamond'] text-[14px] text-[#7A5560] leading-[1.7] italic">
+          <p className="font-['Cormorant_Garamond'] text-[25px] text-[#7A5560] leading-[1.7] italic">
             This pact is not a legal contract. It is a voluntary, living agreement between two people
             who want to be good to each other — today and in the future.
           </p>
