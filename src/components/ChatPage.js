@@ -39,6 +39,7 @@ export default function ChatPage({ label, backRoute, topicId }) {
   const [nextRoute, setNextRoute] = useState('/review');
   const paywallShown = useRef(false);
   const questionsRef = useRef([]);
+  const saveCalledRef = useRef(false);
   const PAYWALL_THRESHOLD = 8;
 
   const progress = questions.length === 0 ? 0 : step >= questions.length ? 100 : Math.round((step / questions.length) * 100);
@@ -95,7 +96,7 @@ console.log("HERE")
           ?.join('') ?? '';
 
         const parsed = JSON.parse(text.trim());
-        console.log('✅ Questions loaded:', parsed.length, parsed);
+        console.log('Questions loaded:', parsed.length, parsed);
         setQuestions(parsed);
       } catch (err) {
         console.error(err);
@@ -219,8 +220,10 @@ console.log("HERE")
   useEffect(() => {
     const currentQuestions = questionsRef.current;
     console.log(`=== answers useEffect fired === answers.length=${answers.length} questions.length=${currentQuestions.length}`);
-    if (currentQuestions.length > 0 && answers.length === currentQuestions.length) {
-      console.log('✅ All answered — calling saveAnswers');
+    if (currentQuestions.length > 0 && answers.length === currentQuestions.length && !saveCalledRef.current) {
+      saveCalledRef.current = true;
+      setSaving(true);
+      console.log('All answered — calling saveAnswers');
       saveAnswers(answers, currentQuestions);
     }
   }, [answers]);
