@@ -55,13 +55,13 @@ export default function PartnerPactReviewPage() {
   };
 
   if (loading) return (
-    <div className="flex-1 flex items-center justify-center bg-[#FAF8F4]">
+    <div className="flex-1 min-h-screen flex items-center justify-center bg-[#FAF8F4]">
       <p className="text-[#B8999F] text-sm">Loading pact…</p>
     </div>
   );
 
   if (error) return (
-    <div className="flex-1 flex items-center justify-center bg-[#FAF8F4]">
+    <div className="flex-1 min-h-screen flex items-center justify-center bg-[#FAF8F4]">
       <p className="text-red-400 text-sm">{error}</p>
     </div>
   );

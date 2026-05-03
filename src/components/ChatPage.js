@@ -67,6 +67,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
   }
 ]`;
 
+console.log("HERE")
         const res = await fetch('https://api.x.ai/v1/responses', {
           method: 'POST',
           headers: {
@@ -79,9 +80,12 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
           }),
         });
 
+       
         if (!res.ok) throw new Error('Failed to fetch questions');
 
         const data = await res.json();
+        console.log("DATA")
+        console.log(data)
 
         const text = data.output
           ?.filter(b => b.type === 'message')
@@ -91,6 +95,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
           ?.join('') ?? '';
 
         const parsed = JSON.parse(text.trim());
+        console.log('✅ Questions loaded:', parsed.length, parsed);
         setQuestions(parsed);
       } catch (err) {
         console.error(err);
@@ -138,9 +143,13 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
   }, [topicId, isEditing]);
 
   const saveAnswers = async (finalAnswers, currentQuestions) => {
+    console.log('=== saveAnswers called ===');
+    console.log('finalAnswers:', finalAnswers);
+    console.log('finalAnswers length:', finalAnswers.length);
+    console.log('currentQuestions length:', currentQuestions.length);
+    console.log('all answers defined?', finalAnswers.every(a => a !== undefined));
     const token = localStorage.getItem('token');
     let pactId;
-
     try {
       const pactMeRes = await fetch(`${BASE_URL}/getpact/me`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -159,6 +168,13 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     setSaveError(null);
 
     try {
+      const mappedAnswers = currentQuestions.map((q, i) => {
+        console.log(`Q${i}: question="${q.q}" | answerIndex=${finalAnswers[i]} | answer="${q.opts[finalAnswers[i]]}"`);
+        return {
+          question: q.q,
+          answer: q.opts[finalAnswers[i]],
+        };
+      });
       const payload = {
         topicId,
         answers: currentQuestions.map((q, i) => ({
@@ -166,6 +182,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
           answer: q.opts[finalAnswers[i]],
         })),
       };
+      console.log('PAYLOAD BEING SENT:', JSON.stringify(payload, null, 2));
 
       const res = await fetch(`${BASE_URL}/${pactId}/section`, {
         method: 'POST',
@@ -188,21 +205,26 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
   const choose = (optionIndex) => {
     setAnswers(prev => {
       const newAnswers = [...prev, optionIndex];
-      const currentQuestions = questionsRef.current;
 
       if (!isPremium && newAnswers.length === PAYWALL_THRESHOLD && !paywallShown.current) {
         paywallShown.current = true;
         setShowPaywall(true);
       }
 
-      if (newAnswers.length === currentQuestions.length) {
-        saveAnswers(newAnswers, currentQuestions);
-      }
-
       return newAnswers;
     });
     setStep(prev => prev + 1);
   };
+
+  useEffect(() => {
+    const currentQuestions = questionsRef.current;
+    console.log(`=== answers useEffect fired === answers.length=${answers.length} questions.length=${currentQuestions.length}`);
+    if (currentQuestions.length > 0 && answers.length === currentQuestions.length) {
+      console.log('✅ All answered — calling saveAnswers');
+      saveAnswers(answers, currentQuestions);
+    }
+  }, [answers]);
+
 
   if (loadingQuestions) {
     return (
