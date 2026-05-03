@@ -24,7 +24,7 @@ const modes = [
 
 export default function TogetherPage() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ message: '', type: '' });
 
@@ -34,7 +34,7 @@ export default function TogetherPage() {
   };
 
   const handleContinue = async () => {
-    const chosen = modes[selected];
+    const chosen = modes.find(m => m.id === selected);
     try {
       setLoading(true);
       const token = localStorage.getItem('token');

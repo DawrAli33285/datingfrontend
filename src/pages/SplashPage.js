@@ -322,13 +322,13 @@ const Pricing = ({ setPage }) => {
   const freeFeatures = ["One pact, 3 topics", "AI-generated pact text", "PDF export (watermarked)", "Both partners included"];
   const paidFeatures = ["Unlimited pacts & topics", "Clean PDF, no watermark", "Annual check-in feature", "Version history", "First month free with code PATTO"];
   return (
-    <section id="pricing" style={{ padding: "100px 48px", background: t.creamD }}>
-      <div style={{ textAlign: "center" }}>
+    <section id="pricing" className="flex flex-col justify-center items-center" style={{ padding: "100px 48px", background: t.creamD }}>
+      <div style={{ textAlign: "center"}}>
         <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: t.roseM, marginBottom: 12, fontWeight: 500 }}>Simple pricing</div>
         <h2 style={{ ...serif, fontSize: "clamp(38px,4vw,54px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-.8px", color: t.tx, marginBottom: 16 }}>One plan. <em style={{ color: t.rose }}>One price.</em></h2>
         <p style={{ ...sans, fontSize: 16, color: t.tm, lineHeight: 1.7, maxWidth: 520, margin: "0 auto" }}>No tiers, no upsells, no legal complexity. Just clarity.</p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 800, margin: "56px auto 0" }}>
+      <div style={{ display: "flex",  margin: "56px auto 0" }}>
        
       
        
@@ -375,21 +375,23 @@ const Footer = () => (
     <footer style={{ padding: "48px 48px 32px", background: t.roseD, display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48 }}>
       <div className="flex flex-row">
         <span style={{ ...serif, fontStyle: "italic", fontSize: 32, color: t.cream, display: "block", marginBottom: 12 }}><PattoIcon/>
-        <p style={{ ...sans, fontSize: 12, color: "rgba(250,247,242,.3)" }}>Contact us: hello@patto.pro</p>
+       
         </span>
         <p style={{ ...sans, fontSize: 13, color: "rgba(250,247,242,.45)", lineHeight: 1.7, maxWidth: 280 }}>A shared promise between two people who want to be honest with each other — today and in the future.</p>
       </div>
       {[
        
-        { title: "Legal", links: [["Terms of Service", "/terms-of-service"], ["Privacy Policy", "/privacy-policy"], ["Cookie Policy", "/cookie-policy"]] },
+        { title: "Legal", links: [["Terms of Service", "/terms-of-service"], ["Privacy Policy", "/privacy-policy"], ["Cookie Policy", "/cookie-policy"],["Contact us: hello@patto.pro","#"]] },
       ].map(col => (
         <div key={col.title}>
+          
           <h4 style={{ ...sans, fontSize: 11, fontWeight: 500, letterSpacing: ".08em", textTransform: "uppercase", color: "rgba(250,247,242,.35)", marginBottom: 16 }}>{col.title}</h4>
           {col.links.map(([label, href]) => (
             <a key={label} href={href} className="footer-link" style={{ ...sans, display: "block", fontSize: 13, color: "rgba(250,247,242,.55)", textDecoration: "none", marginBottom: 10, transition: "color .15s" }}>{label}</a>
           ))}
         </div>
       ))}
+      
     </footer>
     <div style={{ padding: "20px 48px", background: t.roseD, borderTop: ".5px solid rgba(255,255,255,.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <p style={{ ...sans, fontSize: 12, color: "rgba(250,247,242,.3)" }}>© 2026 Traclin Pte Ltd · UEN 202113251D · Singapore</p>

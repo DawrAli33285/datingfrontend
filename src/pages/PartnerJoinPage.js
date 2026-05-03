@@ -80,7 +80,7 @@ export default function PartnerJoinPage() {
         </svg>
 
         <h1 className="font-['Cormorant_Garamond'] text-[30px] font-normal text-[#2A1A1F] leading-[1.15] mb-[10px]">
-          {inviterName} invited you<br />to build your Pact.
+          {inviterName} invited you<br />to build your Patto.
         </h1>
         <p className="text-[13px] text-[#7A5560] leading-[1.7] mb-2">
           {inviterName} has already answered some questions. Now it's your turn to add your perspective —

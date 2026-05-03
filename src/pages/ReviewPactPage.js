@@ -43,41 +43,65 @@ export default function ReviewPactPage() {
       };
       
       const handleDownloadPDF = () => {
-        const lines = [];
         const names = pact?.names || 'Your pact';
-      
-        lines.push(`PATTO — ${names}`);
-        lines.push(`Generated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`);
-        lines.push('');
-        lines.push('─────────────────────────────────────');
-        lines.push('');
-      
-        (pact?.topics ?? []).forEach((topic, idx) => {
-          lines.push(`${idx + 1}. ${topic.title.toUpperCase()}${topic.subtitle ? ` — ${topic.subtitle}` : ''}`);
-          lines.push('');
-      
-          (topic.answers ?? []).forEach((qa, i) => {
-            lines.push(`  Q${i + 1}: ${qa.question}`);
-            lines.push(`  A:  ${qa.answer}`);
-            lines.push('');
-          });
-      
-          if (topic.partnerReview?.status) {
-            lines.push(`  Partner review: ${voteLabel(topic.partnerReview.status)}`);
-            lines.push('');
-          }
-      
-          lines.push('─────────────────────────────────────');
-          lines.push('');
-        });
-      
-        const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+        const partner1 = pact?.partnerNames?.partner1 || 'Partner 1';
+        const partner2 = pact?.partnerNames?.partner2 || 'Partner 2';
+        const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+        const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Patto — ${partner1} & ${partner2}</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 700px; margin: 60px auto; color: #2A1A1F; line-height: 1.7; padding: 0 40px; }
+    h1 { font-size: 32px; font-weight: normal; text-align: center; margin-bottom: 4px; }
+    .subtitle { text-align: center; color: #7A5560; font-size: 14px; margin-bottom: 6px; }
+    .date { text-align: center; color: #B8999F; font-size: 12px; margin-bottom: 40px; }
+    hr { border: none; border-top: 1px solid #e8ddd9; margin: 32px 0; }
+    .topic-title { font-size: 18px; font-weight: bold; color: #6B2D3E; margin-bottom: 4px; }
+    .topic-subtitle { font-size: 12px; color: #B8999F; margin-bottom: 16px; }
+    .qa { margin-bottom: 14px; }
+    .question { font-size: 13px; color: #7A5560; margin-bottom: 2px; }
+    .answer { font-size: 14px; color: #2A1A1F; font-weight: bold; }
+    .review { font-size: 12px; color: #888; margin-top: 12px; font-style: italic; }
+    .brand { text-align: center; font-style: italic; color: #D4899A; font-size: 13px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+  <div class="brand">patto</div>
+  <h1>${partner1} & ${partner2}</h1>
+  <div class="subtitle">Relationship Agreement</div>
+  <div class="date">Generated: ${date}</div>
+  <hr/>
+
+  ${(pact?.topics ?? []).map((topic, idx) => `
+    <div>
+      <div class="topic-title">${idx + 1}. ${topic.title}</div>
+      ${topic.subtitle ? `<div class="topic-subtitle">${topic.subtitle}</div>` : ''}
+      ${(topic.answers ?? []).map(qa => `
+        <div class="qa">
+          <div class="question">${qa.question}</div>
+          <div class="answer">${qa.answer}</div>
+        </div>
+      `).join('')}
+      ${topic.partnerReview?.status ? `<div class="review">Partner review: ${voteLabel(topic.partnerReview.status)}</div>` : ''}
+    </div>
+    <hr/>
+  `).join('')}
+</body>
+</html>`;
+
+        const blob = new Blob([html], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `patto-${names}.txt`.toLowerCase().replace(/\s/g, '-');
-        a.click();
-        URL.revokeObjectURL(url);
+        const win = window.open(url, '_blank');
+        if (win) {
+          win.onload = () => {
+            win.print();
+            URL.revokeObjectURL(url);
+          };
+        }
       };
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">

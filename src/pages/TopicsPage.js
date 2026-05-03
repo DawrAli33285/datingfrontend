@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../components/baseurl';
 
 const initialTopics = [
-  { id: 'mn', name: 'Money', desc: 'Who pays what', icon: 'M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6', sel: true },
   { id: 'fi', name: 'Fidelity', desc: 'Exclusivity, limits', icon: 'M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z', sel: true },
   { id: 'ho', name: 'Home', desc: 'Living, space, guests', icon: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z', sel: true },
+  { id: 'mn', name: 'Money', desc: 'Who pays what', icon: 'M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6', sel: true },
   { id: 'fu', name: 'Future', desc: 'Kids, career, where', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', sel: false },
   { id: 'co', name: 'Conflict', desc: 'How to handle it', icon: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z', sel: false },
   { id: 'se', name: 'Separation', desc: 'If things end', icon: 'M18 6L6 18M6 6l12 12', sel: false },

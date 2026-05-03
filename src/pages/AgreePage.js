@@ -30,6 +30,8 @@ export default function AgreePage() {
         const pactData = await pactRes.json();
   
         if (pactRes.ok) {
+          console.log(pactData)
+          console.log("PACT DATA")
           const { partner1, partner2 } = pactData.partnerNames;
           setNames({ partner1: partner1 || 'Partner 1', partner2: partner2 || 'Partner 2' });
           setCreatedAt(pactData.createdAt);

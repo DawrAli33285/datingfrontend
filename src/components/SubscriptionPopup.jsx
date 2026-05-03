@@ -25,6 +25,12 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
   const [alreadyPremium, setAlreadyPremium] = useState(false);
   const [cardReady, setCardReady] = useState(false);
   const [error, setError] = useState('');
+const [promoOpen, setPromoOpen] = useState(false);
+const [promoCode, setPromoCode] = useState('');
+const [promoStatus, setPromoStatus] = useState(null);
+const [promoMessage, setPromoMessage] = useState('');
+const [discount, setDiscount] = useState(0);
+
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -73,7 +79,7 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
         `${BASE_URL}/create-subscription`,
         {
           email,
-          amount: 9,
+          amount: 14,
           currency: 'usd',
           interval: 'month',
           planName: 'Premium',
@@ -90,6 +96,38 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
       setLoading(false);
     }
   };
+
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return;
+    console.log(JSON.stringify(promoCode.trim().toUpperCase()));
+    if (promoCode.trim().toUpperCase() !== 'PATTO') {
+      setDiscount(0);
+      setPromoStatus('invalid');
+      setPromoMessage('Invalid promo code.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.post(
+        `${BASE_URL}/promo/validate`,
+        { code: 'PATTO' },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      onSuccess?.();
+      onClose();
+      
+    } catch (err) {
+      setDiscount(0);
+      setPromoStatus('invalid');
+      setPromoMessage(err?.response?.data?.message || 'Invalid promo code.');
+    }
+  };
+  
+
+  const finalAmount = discount > 0
+  ? parseFloat((14 * (1 - discount / 100)).toFixed(2))
+  : 14;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
@@ -182,6 +220,52 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
                 <span className="text-[11px] text-[#B8999F]">Secured by Stripe · 256-bit SSL</span>
               </div>
             </div>
+            
+            <div className="mb-4">
+              <button
+                onClick={() => setPromoOpen(p => !p)}
+                className="flex items-center gap-1.5 text-[12.5px] font-medium text-[#6B2D3E]"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B2D3E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                  <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                Have a promo code?
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6B2D3E" strokeWidth="2" strokeLinecap="round"
+                  className={`transition-transform ${promoOpen ? 'rotate-180' : ''}`}>
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+
+              {promoOpen && (
+                <div className="mt-2.5 flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={promoCode}
+                    onChange={e => {
+                      setPromoCode(e.target.value.toUpperCase());
+                      setPromoStatus(null);
+                      setPromoMessage('');
+                      setDiscount(0);
+                    }}
+                    placeholder="Enter code"
+                    className="flex-1 h-[40px] rounded-[10px] border border-[rgba(107,45,62,0.25)] bg-white px-3 text-[13px] text-[#2A1A1F] placeholder:text-[#B8999F] uppercase tracking-wider focus:outline-none focus:border-[#6B2D3E]"
+                  />
+                  <button
+                    onClick={handleApplyPromo}
+                    className="h-[40px] px-4 rounded-[10px] bg-[#6B2D3E] text-[#FAF8F4] text-[13px] font-medium hover:bg-[#5A2535] transition-colors whitespace-nowrap"
+                  >
+                    Apply
+                  </button>
+                </div>
+              )}
+
+              {promoMessage && (
+                <p className={`text-[12px] mt-1.5 ${promoStatus === 'valid' ? 'text-[#0F6E56]' : 'text-[#C4562A]'}`}>
+                  {promoMessage}
+                </p>
+              )}
+            </div>
 
             {error && (
               <div className="bg-[#FDF3F0] border border-[#C4562A] rounded-[12px] px-4 py-3 mb-4">
@@ -199,7 +283,7 @@ export default function SubscriptionPopup({ onClose, onSuccess }) {
               ) : (
                 <>
                   <span>Get Premium</span>
-                  <span className="bg-[rgba(255,255,255,0.15)] rounded-lg px-2 py-0.5 text-[13px]">$9 / month</span>
+                  <span className="bg-[rgba(255,255,255,0.15)] rounded-lg px-2 py-0.5 text-[13px]">$14 / month</span>
                 </>
               )}
             </button>

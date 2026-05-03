@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -49,12 +48,14 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import TOS from './pages/TosPage';
 import Privacy from './pages/PrivacyPolicy';
 import Cookies from './pages/CookiePolicyPage';
+import SuperAdminLogin from './superadminpages/login';
+import UsersPage from './superadminpages/dashboard';
 
 
 const GOOGLE_CLIENT_ID = '90321078061-0170dr3h7mknf595o674b7ctu70av45u.apps.googleusercontent.com';
 
 
-const stripePromise = loadStripe("pk_test_51OwuO4LcfLzcwwOYdssgGfUSfOgWT1LwO6ewi3CEPewY7WEL9ATqH6WJm3oAcLDA3IgUvVYLVEBMIEu0d8fUwhlw009JwzEYmV");
+const stripePromise = loadStripe("pk_live_51TSBcMJBaV4En9H7lNQtfruSCVPbZ84VkOutuyj9zanFanxbIb2Fyl9HCu9h0W76PVQApShKsEScDHrDkfgDnA3k00HalRyusL");
 
 
 const router = createBrowserRouter([
@@ -62,7 +63,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      
       { path: '/', element: <SplashPage /> },
       { path: '/welcome', element: <WelcomePage /> },
       { path: '/signup', element: <SignUpPage /> },
@@ -71,12 +71,10 @@ const router = createBrowserRouter([
       { path: '/forgot-password', element: <ForgotPasswordPage /> },
       { path: '/join', element: <PartnerJoinPage /> },
       { path: '/complete', element: <CompletePage /> },
-      { path:"/reset-password", element:<ResetPasswordPage/>},
-      {path:'/terms-of-service',element:<TOS/>},
-      {path:'/privacy-policy',element:<Privacy/>},
-      {path:'/cookie-policy',element:<Cookies/>},
-     
-
+      { path: '/reset-password', element: <ResetPasswordPage /> },
+      { path: '/terms-of-service', element: <TOS /> },
+      { path: '/privacy-policy', element: <Privacy /> },
+      { path: '/cookie-policy', element: <Cookies /> },
       {
         path: '/name',
         element: <PartnerGuard><NamePage /></PartnerGuard>,
@@ -106,8 +104,8 @@ const router = createBrowserRouter([
         element: <PartnerGuard><ChatHomePage /></PartnerGuard>,
       },
       { path: '/chat/future', element: <PartnerGuard><ChatFuturePage /></PartnerGuard> },
-{ path: '/chat/conflict', element: <PartnerGuard><ChatConflictPage /></PartnerGuard> },
-{ path: '/chat/separation', element: <PartnerGuard><ChatSeparationPage /></PartnerGuard> },
+      { path: '/chat/conflict', element: <PartnerGuard><ChatConflictPage /></PartnerGuard> },
+      { path: '/chat/separation', element: <PartnerGuard><ChatSeparationPage /></PartnerGuard> },
       {
         path: '/review',
         element: <PartnerGuard><ReviewPactPage /></PartnerGuard>,
@@ -140,30 +138,33 @@ const router = createBrowserRouter([
         path: '/account',
         element: <PartnerGuard><AccountPage /></PartnerGuard>,
       },
-
       {
         path: '/notifications',
         element: <PartnerGuard><NotificationsPage /></PartnerGuard>,
       },
-
       {
         path: '/partner-review',
         element: <OwnerGuard><PartnerReviewPage /></OwnerGuard>,
       },
     ],
   },
+  // Superadmin routes — outside Layout
+  {
+    path: '/superadmin/login',
+    element: <SuperAdminLogin />,
+  },
+  {
+    path:'/superadmin/dashboard',
+    element:<UsersPage/>
+  }
 ]);
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  
-      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-
+  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <Elements stripe={stripePromise}>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </Elements>
-
-    </GoogleOAuthProvider>
-  
+  </GoogleOAuthProvider>
 );

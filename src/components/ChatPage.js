@@ -142,68 +142,70 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
   }, [topicId, isEditing]);
 
 
-  useEffect(() => {
-    if (questions.length === 0 || answers.length !== questions.length) return;
 
-    const saveAnswers = async () => {
-      const token = localStorage.getItem('token');
-      let pactId;
-      try {
-        const pactMeRes = await fetch(`${BASE_URL}/getpact/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!pactMeRes.ok) { setSaveError('No pact found. Please restart.'); return; }
-        const pactMeData = await pactMeRes.json();
-        pactId = pactMeData.pactId;
-      } catch {
-        setSaveError('No pact found. Please restart.');
-        return;
-      }
-      if (!pactId) { setSaveError('No pact found. Please restart.'); return; }
+  const saveAnswers = async (finalAnswers) => {
+    const token = localStorage.getItem('token');
+    let pactId;
 
-      setSaving(true);
-      setSaveError(null);
+    try {
+      const pactMeRes = await fetch(`${BASE_URL}/getpact/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!pactMeRes.ok) { setSaveError('No pact found. Please restart.'); return; }
+      const pactMeData = await pactMeRes.json();
+      pactId = pactMeData.pactId;
+    } catch {
+      setSaveError('No pact found. Please restart.');
+      return;
+    }
 
-      try {
-        const payload = {
-          topicId,
-          answers: questions.map((q, i) => ({
-            question: q.q,
-            answer: q.opts[answers[i]],
-          })),
-        };
+    if (!pactId) { setSaveError('No pact found. Please restart.'); return; }
 
-        const res = await fetch(`${BASE_URL}/${pactId}/section`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        });
+    setSaving(true);
+    setSaveError(null);
 
-        const data = await res.json();
-        if (!res.ok) setSaveError(data.message || 'Failed to save answers');
-      } catch (err) {
-        setSaveError('Network error. Answers may not be saved.');
-      } finally {
-        setSaving(false);
-      }
-    };
+    try {
+      const payload = {
+        topicId,
+        answers: questions.map((q, i) => ({
+          question: q.q,
+          answer: q.opts[finalAnswers[i]], 
+        })),
+      };
 
-    saveAnswers();
-  }, [answers, questions]);
+      const res = await fetch(`${BASE_URL}/${pactId}/section`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-const choose = (optionIndex) => {
+      const data = await res.json();
+      if (!res.ok) setSaveError(data.message || 'Failed to save answers');
+    } catch (err) {
+      setSaveError('Network error. Answers may not be saved.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const choose = (optionIndex) => {
     const newAnswers = [...answers, optionIndex];
     setAnswers(newAnswers);
-    setStep(step + 1);
+    setStep(prev => prev + 1);
 
-    const newTotal = answers.length + 1;
+    const newTotal = newAnswers.length;
 
     if (!isPremium && newTotal === PAYWALL_THRESHOLD && !paywallShown.current) {
       paywallShown.current = true;
       setShowPaywall(true);
+    }
+
+  
+    if (newTotal === questions.length) {
+      saveAnswers(newAnswers);
     }
   };
  
@@ -233,7 +235,7 @@ const choose = (optionIndex) => {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-[#FAF8F4]">
+   <div className="flex-1 flex flex-col bg-[#FAF8F4] rounded-[35px] overflow-hidden min-h-screen md:min-h-0 md:h-full md:min-w-[600px] md:max-w-[800px] md:mx-auto md:my-6 md:min-h-[85vh]">
       {showPaywall && <SubscriptionPopup onClose={() => setShowPaywall(false)} />}
 
     

@@ -228,49 +228,116 @@ export default function AccountPage() {
       showToast('No pact data to download yet.');
       return;
     }
-  
-    const lines = [];
-    lines.push(`PATTO — ${pactNames}`);
-    lines.push(`Generated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`);
-    lines.push('');
-    lines.push('─────────────────────────────────────');
-    lines.push('');
-  
-    pactTopics.forEach((topic, idx) => {
-      lines.push(`${idx + 1}. ${topic.title.toUpperCase()}${topic.subtitle ? ` — ${topic.subtitle}` : ''}`);
-      lines.push('');
-  
-      (topic.answers ?? []).forEach((qa, i) => {
-        lines.push(`  Q${i + 1}: ${qa.question}`);
-        lines.push(`  A:  ${qa.answer}`);
-        lines.push('');
-      });
-  
-      if (topic.partnerReview?.status) {
-        lines.push(`  Partner review: ${voteLabel(topic.partnerReview.status)}`);
-        lines.push('');
-      }
-  
-      lines.push('─────────────────────────────────────');
-      lines.push('');
-    });
-  
-    if (pactSignatures.length) {
-      lines.push('SIGNATURES');
-      lines.push('');
-      pactSignatures.forEach((sig) => {
-        lines.push(`  ${sig.partnerName} — signed ${formatSigDate(sig.signedAt)}`);
-      });
-    }
-  
-    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+
+    const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Patto — ${pactNames}</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 700px; margin: 60px auto; color: #2A1A1F; line-height: 1.7; padding: 0 40px; }
+    h1 { font-size: 32px; font-weight: normal; text-align: center; margin-bottom: 4px; }
+    .subtitle { text-align: center; color: #7A5560; font-size: 14px; margin-bottom: 6px; }
+    .date { text-align: center; color: #B8999F; font-size: 12px; margin-bottom: 40px; }
+    hr { border: none; border-top: 1px solid #e8ddd9; margin: 32px 0; }
+    .topic-title { font-size: 18px; font-weight: bold; color: #6B2D3E; margin-bottom: 4px; }
+    .topic-subtitle { font-size: 12px; color: #B8999F; margin-bottom: 16px; }
+    .qa { margin-bottom: 14px; }
+    .question { font-size: 13px; color: #7A5560; margin-bottom: 2px; }
+    .answer { font-size: 14px; color: #2A1A1F; font-weight: bold; }
+    .review { font-size: 12px; color: #888; margin-top: 12px; font-style: italic; }
+    .signatures { margin-top: 40px; }
+    .sig-block { display: flex; gap: 24px; }
+    .sig-item { flex: 1; border-top: 1px solid #2A1A1F; padding-top: 8px; font-size: 13px; }
+    .sig-name { font-weight: bold; }
+    .sig-date { color: #B8999F; font-size: 11px; }
+    .brand { text-align: center; font-style: italic; color: #D4899A; font-size: 13px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+  <div class="brand">patto</div>
+  <h1>${pactNames}</h1>
+  <div class="subtitle">Relationship Agreement</div>
+  <div class="date">Generated: ${date}</div>
+  <hr/>
+
+  ${pactTopics.map((topic, idx) => `
+    <div>
+      <div class="topic-title">${idx + 1}. ${topic.title}</div>
+      ${topic.subtitle ? `<div class="topic-subtitle">${topic.subtitle}</div>` : ''}
+      ${(topic.answers ?? []).map(qa => `
+        <div class="qa">
+          <div class="question">${qa.question}</div>
+          <div class="answer">${qa.answer}</div>
+        </div>
+      `).join('')}
+      ${topic.partnerReview?.status ? `<div class="review">Partner review: ${voteLabel(topic.partnerReview.status)}</div>` : ''}
+    </div>
+    <hr/>
+  `).join('')}
+
+  ${pactSignatures.length ? `
+    <div class="signatures">
+      <div class="sig-block">
+        ${pactSignatures.map(sig => `
+          <div class="sig-item">
+            <div class="sig-name">${sig.partnerName}</div>
+            <div class="sig-date">Signed ${formatSigDate(sig.signedAt)}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  ` : ''}
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `patto-${pactNames}.txt`.toLowerCase().replace(/\s/g, '-');
-    a.click();
-    URL.revokeObjectURL(url);
+    const win = window.open(url, '_blank');
+    if (win) {
+      win.onload = () => {
+        win.print();
+        URL.revokeObjectURL(url);
+      };
+    }
   };
+
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Are you sure? This cannot be undone.')) return;
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${BASE_URL}/deleteMyAccount`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('pactId');
+      localStorage.removeItem('isPartner');
+      navigate('/signin');
+    } catch {
+      showToast('Could not delete account. Please try again.');
+    }
+  };
+
+
+  const handleCancelSubscription = async () => {
+    if (!window.confirm('Cancel your subscription? You will lose Premium access.')) return;
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${BASE_URL}/cancel-subscription`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUserData(prev => ({ ...prev, isPremium: false, subscription: null }));
+      showToast('Subscription cancelled.', 'success');
+    } catch {
+      showToast('Could not cancel subscription. Please try again.');
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col bg-[#FAF8F4]">
 
@@ -352,23 +419,40 @@ export default function AccountPage() {
 
       
        <div className="text-[10px] tracking-[0.06em] uppercase text-[#B8999F] mt-1">Plan</div>
-        <div
-          className={`bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] px-[14px] py-3 flex justify-between items-center ${!userData?.isPremium ? 'cursor-pointer hover:bg-[#FAF8F4] transition-colors' : ''}`}
-          onClick={() => { if (!userData?.isPremium) setShowSubscriptionPopup(true); }}
-        >
-          <div>
-            <div className="text-[14px] font-medium text-[#2A1A1F]">
-              {userData?.isPremium ? 'Couple plan' : 'Free plan'}
+       <div className="bg-white border border-[rgba(107,45,62,0.13)] rounded-[14px] overflow-hidden divide-y divide-[rgba(107,45,62,0.13)]">
+          <div
+            className={`px-[14px] py-3 flex justify-between items-center ${!userData?.isPremium ? 'cursor-pointer hover:bg-[#FAF8F4] transition-colors' : ''}`}
+            onClick={() => { if (!userData?.isPremium) setShowSubscriptionPopup(true); }}
+          >
+            <div>
+              <div className="text-[14px] font-medium text-[#2A1A1F]">
+                {userData?.isPremium ? 'Couple plan' : 'Free plan'}
+              </div>
+              <div className="text-[11px] text-[#B8999F]">
+                {userData?.isPremium ? '$14 / month' : 'Upgrade to unlock all features'}
+              </div>
             </div>
-            <div className="text-[11px] text-[#B8999F]">
-              {userData?.isPremium ? '€9 / month' : 'Upgrade to unlock all features'}
-            </div>
+            <span className={`inline-flex items-center px-2.5 py-[3px] rounded-full text-[11px] font-medium ${
+              userData?.isPremium ? 'bg-[#E8F5EE] text-[#0F6E56]' : 'bg-[#F0E9E3] text-[#7A5560]'
+            }`}>
+              {userData?.isPremium ? 'Active' : 'Upgrade →'}
+            </span>
           </div>
-          <span className={`inline-flex items-center px-2.5 py-[3px] rounded-full text-[11px] font-medium ${
-            userData?.isPremium ? 'bg-[#E8F5EE] text-[#0F6E56]' : 'bg-[#F0E9E3] text-[#7A5560]'
-          }`}>
-            {userData?.isPremium ? 'Active' : 'Upgrade →'}
-          </span>
+
+          {userData?.isPremium && (
+            <button
+              onClick={handleCancelSubscription}
+              className="w-full px-[14px] py-3 flex justify-between items-center hover:bg-[#FAF8F4] transition-colors"
+            >
+              <div className="flex items-center gap-[10px]">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E24B4A" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span className="text-[14px] text-[#E24B4A]">Cancel subscription</span>
+              </div>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E24B4A" strokeWidth="2" strokeLinecap="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          )}
         </div>
 
 
@@ -388,6 +472,13 @@ export default function AccountPage() {
           className="w-full h-[44px] rounded-[13px] bg-[#F0E9E3] text-[#7A5560] text-[14px] font-medium hover:bg-[#E6DCD5] transition-colors mt-1"
         >
           Sign out
+        </button>
+
+        <button
+          onClick={handleDeleteAccount}
+          className="w-full h-[44px] rounded-[13px] bg-[#F0E9E3] text-[#7A5560] text-[14px] font-medium hover:bg-[#E6DCD5] transition-colors mt-1"
+        >
+          Delete account
         </button>
 
         <div className="text-center text-[11px] text-[#B8999F] pb-2">
