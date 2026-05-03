@@ -38,9 +38,14 @@ export default function ChatPage({ label, backRoute, topicId }) {
   const [saveError, setSaveError] = useState(null);
   const [nextRoute, setNextRoute] = useState('/review');
   const paywallShown = useRef(false);
+  const questionsRef = useRef([]);
   const PAYWALL_THRESHOLD = 8;
 
   const progress = questions.length === 0 ? 0 : step >= questions.length ? 100 : Math.round((step / questions.length) * 100);
+
+  useEffect(() => {
+    questionsRef.current = questions;
+  }, [questions]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -56,14 +61,6 @@ Each question must have exactly 4 short answer options (max 10 words each).
 
 Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
 [
-  {
-    "q": "Question text here",
-    "opts": ["Option 1", "Option 2", "Option 3", "Option 4"]
-  },
-  {
-    "q": "Question text here",
-    "opts": ["Option 1", "Option 2", "Option 3", "Option 4"]
-  },
   {
     "q": "Question text here",
     "opts": ["Option 1", "Option 2", "Option 3", "Option 4"]
@@ -85,7 +82,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
         if (!res.ok) throw new Error('Failed to fetch questions');
 
         const data = await res.json();
-        
+
         const text = data.output
           ?.filter(b => b.type === 'message')
           ?.flatMap(b => b.content)
@@ -106,7 +103,6 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     fetchQuestions();
     localStorage.removeItem('totalAnswers');
   }, [topicId]);
-
 
   useEffect(() => {
     const fetchPactAndUser = async () => {
@@ -141,9 +137,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     fetchPactAndUser();
   }, [topicId, isEditing]);
 
-
-
-  const saveAnswers = async (finalAnswers) => {
+  const saveAnswers = async (finalAnswers, currentQuestions) => {
     const token = localStorage.getItem('token');
     let pactId;
 
@@ -167,9 +161,9 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
     try {
       const payload = {
         topicId,
-        answers: questions.map((q, i) => ({
+        answers: currentQuestions.map((q, i) => ({
           question: q.q,
-          answer: q.opts[finalAnswers[i]], 
+          answer: q.opts[finalAnswers[i]],
         })),
       };
 
@@ -192,23 +186,24 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
   };
 
   const choose = (optionIndex) => {
-    const newAnswers = [...answers, optionIndex];
-    setAnswers(newAnswers);
+    setAnswers(prev => {
+      const newAnswers = [...prev, optionIndex];
+      const currentQuestions = questionsRef.current;
+
+      if (!isPremium && newAnswers.length === PAYWALL_THRESHOLD && !paywallShown.current) {
+        paywallShown.current = true;
+        setShowPaywall(true);
+      }
+
+      if (newAnswers.length === currentQuestions.length) {
+        saveAnswers(newAnswers, currentQuestions);
+      }
+
+      return newAnswers;
+    });
     setStep(prev => prev + 1);
-
-    const newTotal = newAnswers.length;
-
-    if (!isPremium && newTotal === PAYWALL_THRESHOLD && !paywallShown.current) {
-      paywallShown.current = true;
-      setShowPaywall(true);
-    }
-
-  
-    if (newTotal === questions.length) {
-      saveAnswers(newAnswers);
-    }
   };
- 
+
   if (loadingQuestions) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-[#FAF8F4] gap-3">
@@ -235,10 +230,9 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
   }
 
   return (
-   <div className="flex-1 flex flex-col bg-[#FAF8F4] rounded-[35px] overflow-hidden min-h-screen md:min-h-0 md:h-full md:min-w-[600px] md:max-w-[800px] md:mx-auto md:my-6 md:min-h-[85vh]">
+    <div className="flex-1 flex flex-col bg-[#FAF8F4] rounded-[35px] overflow-hidden min-h-screen md:min-h-0 md:h-full md:min-w-[600px] md:max-w-[800px] md:mx-auto md:my-6 md:min-h-[85vh]">
       {showPaywall && <SubscriptionPopup onClose={() => setShowPaywall(false)} />}
 
-    
       <div className="px-5 pt-[10px] pb-[10px] bg-white border-b border-[rgba(107,45,62,0.13)] flex-shrink-0">
         <div className="flex items-center gap-3 w-full">
           <button
@@ -261,7 +255,6 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
         </div>
       </div>
 
-      
       <div className="flex-1 px-[18px] py-4 flex flex-col gap-3 overflow-y-auto">
         {questions.map((q, i) => {
           if (i > step) return null;
@@ -308,7 +301,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
               {saving ? 'Saving your answers…' : saveError ? saveError : 'Your answers have been saved to your pact.'}
             </p>
             <button
-             onClick={() => window.location.href = nextRoute}
+              onClick={() => window.location.href = nextRoute}
               disabled={saving}
               className="inline-block bg-[#0F6E56] text-white rounded-[10px] px-4 py-2 text-[13px] font-medium hover:bg-[#0a5a45] transition-colors disabled:opacity-60"
             >
