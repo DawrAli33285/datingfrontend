@@ -170,18 +170,7 @@ toast.error("Error occured while trying to login",{containerId:"adminLogin"})
                 )}
               </div>
 
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-                <a href="/adminreset" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
-                  Forgot password?
-                </a>
-              </div>
+             
 
               <button
                 onClick={handleSubmit}
@@ -208,17 +197,7 @@ toast.error("Error occured while trying to login",{containerId:"adminLogin"})
 
             
 
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <p className="text-sm text-gray-600 text-center mb-4">
-                Don't have an account?{' '}
-                <a href="/adminregister" className="text-blue-600 hover:text-blue-800 font-medium">
-                  Register here
-                </a>
-              </p>
-              <p className="text-xs text-gray-500 text-center">
-                🔒 This is a secure admin area. All activities are logged and monitored.
-              </p>
-            </div>
+          
           </div>
         </div>
 
