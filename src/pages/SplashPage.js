@@ -320,7 +320,7 @@ const Testimonials = () => {
 ══════════════════════════════════════════════════════════════════════════ */
 const Pricing = ({ setPage }) => {
   const freeFeatures = ["One pact, 3 topics", "AI-generated pact text", "PDF export (watermarked)", "Both partners included"];
-  const paidFeatures = ["Unlimited pacts & topics", "Clean PDF, no watermark", "Annual check-in feature", "Version history", "First month free with code PATTO"];
+  const paidFeatures = ["1 main Pact", "Access to 6 full topics", "Revise and update your pact anytime", "Clean PDF export, no watermark", "Constant service updates & new features","End-to-end encrypted"];
   return (
     <section id="pricing" className="flex flex-col justify-center items-center" style={{ padding: "100px 48px", background: t.creamD }}>
       <div style={{ textAlign: "center"}}>
