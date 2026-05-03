@@ -308,7 +308,7 @@ Respond ONLY with valid JSON in this exact format, no markdown, no explanation:
               {saving ? 'Saving your answers…' : saveError ? saveError : 'Your answers have been saved to your pact.'}
             </p>
             <button
-              onClick={() => navigate(nextRoute)}
+             onClick={() => window.location.href = nextRoute}
               disabled={saving}
               className="inline-block bg-[#0F6E56] text-white rounded-[10px] px-4 py-2 text-[13px] font-medium hover:bg-[#0a5a45] transition-colors disabled:opacity-60"
             >

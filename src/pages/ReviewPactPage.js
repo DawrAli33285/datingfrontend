@@ -12,16 +12,30 @@ export default function ReviewPactPage() {
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
   
   useEffect(() => {
-    const fetchPact = async () => {
+    const fetchPact = async (retries = 3) => {
       try {
         const token = localStorage.getItem('token');
+        if (!token) {
+          if (retries > 0) {
+            setTimeout(() => fetchPact(retries - 1), 500);
+            return;
+          }
+          setLoading(false);
+          return;
+        }
         const res = await axios.get(`${BASE_URL}/pact/review/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-      
+        console.log("PACT")
+        console.log(res.data)
         setPact(res.data);
-      } catch {
-     
+      } catch(e) {
+        console.log("ERROR")
+        console.log(e.message)
+        if (retries > 0) {
+          setTimeout(() => fetchPact(retries - 1), 800);
+          return;
+        }
       } finally {
         setLoading(false);
       }
