@@ -57,6 +57,27 @@ const [discount, setDiscount] = useState(0);
   const handleSubscribe = async () => {
     if (!stripe || !elements) return;
 
+
+    if (promoStatus === 'valid') {
+      if (!cardReady) {
+        setError('Please enter your full card details to continue.');
+        return;
+      }
+      try {
+        const token = localStorage.getItem('token');
+        await axios.post(
+          `${BASE_URL}/promo/validate`,
+          { code: promoCode.trim().toUpperCase() },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        onSuccess?.();
+        onClose();
+      } catch (err) {
+        setError(err?.response?.data?.message || 'Failed to apply promo. Please try again.');
+      }
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -99,29 +120,15 @@ const [discount, setDiscount] = useState(0);
 
   const handleApplyPromo = async () => {
     if (!promoCode.trim()) return;
-    console.log(JSON.stringify(promoCode.trim().toUpperCase()));
     if (promoCode.trim().toUpperCase() !== 'PATTO') {
       setDiscount(0);
       setPromoStatus('invalid');
       setPromoMessage('Invalid promo code.');
       return;
     }
-
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(
-        `${BASE_URL}/promo/validate`,
-        { code: 'PATTO' },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      onSuccess?.();
-      onClose();
-      
-    } catch (err) {
-      setDiscount(0);
-      setPromoStatus('invalid');
-      setPromoMessage(err?.response?.data?.message || 'Invalid promo code.');
-    }
+   
+    setPromoStatus('valid');
+    setPromoMessage('Promo code applied! Enter your card details to continue.');
   };
   
 
@@ -273,13 +280,15 @@ const [discount, setDiscount] = useState(0);
               </div>
             )}
 
-            <button
+<button
               onClick={handleSubscribe}
               disabled={loading || !stripe || !cardReady}
               className="w-full h-[52px] rounded-[15px] bg-[#6B2D3E] text-[#FAF8F4] text-[15px] font-medium hover:bg-[#5A2535] transition-colors flex items-center justify-center gap-2 mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : promoStatus === 'valid' ? (
+                <span>Activate with Promo</span>
               ) : (
                 <>
                   <span>Get Premium</span>
